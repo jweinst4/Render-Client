@@ -49,7 +49,7 @@ function LeaguesComponent() {
 
     useEffect(() => {
         const getDatas = async () => {
-            const url = process.env.REACT_APP_SERVER_URL + "users/62b7ccaa-f177-4804-98c7-f0dfb1fa8d72"
+            const url = process.env.REACT_APP_SERVER_URL + "users/335a84d2-003a-4672-bbbd-491ed116159c"
             const response = await fetch(url,
                 {
                     method: "GET",
