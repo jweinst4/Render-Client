@@ -46,7 +46,6 @@ const useStyles = createUseStyles({
 function LeaguesComponent() {
     const classes = useStyles();
     const [leagues, setLeagues] = useState(0);
-    require('dotenv').config()
 
     useEffect(() => {
         const getDatas = async () => {

@@ -6,6 +6,7 @@ import Theme from 'resources/theme';
 import Routes from 'routes';
 import './index.css';
 import * as serviceWorker from './serviceWorker';
+require('dotenv').config()
 
 ReactDOM.render(
     <ThemeProvider theme={Theme}>
