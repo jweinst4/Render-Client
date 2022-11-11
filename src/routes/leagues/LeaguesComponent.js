@@ -50,7 +50,14 @@ function LeaguesComponent() {
     useEffect(() => {
         const getDatas = async () => {
             const url = process.env.REACT_APP_SERVER_URL + "users/62b7ccaa-f177-4804-98c7-f0dfb1fa8d72"
-            const response = await fetch(url);
+            const response = await fetch(url,
+                {
+                    method: "GET",
+                    headers: {
+                        "access-control-allow-origin": "*",
+                        "Content-type": "application/json; charset=UTF-8"
+                    }
+                });
             const data = await response.json();
             setLeagues(data);
         }
