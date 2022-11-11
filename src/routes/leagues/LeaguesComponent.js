@@ -47,7 +47,11 @@ function LeaguesComponent() {
     const classes = useStyles();
     const [leagues, setLeagues] = useState(0);
 
+    const [data, setData] = useState();
+    const [isBusy, setBusy] = useState()
+
     useEffect(() => {
+        setBusy(true);
         const getDatas = async () => {
             const url = process.env.REACT_APP_SERVER_URL + "users/335a84d2-003a-4672-bbbd-491ed116159c"
             const response = await fetch(url,
@@ -60,6 +64,7 @@ function LeaguesComponent() {
                 });
             const data = await response.json();
             setLeagues(data);
+            setBusy(false);
         }
         getDatas()
     }, []);
@@ -83,7 +88,7 @@ function LeaguesComponent() {
                 horizontal='space-between'
                 breakpoints={{ 768: 'column' }}
             >
-                {leagues ? displayLeagues() : null}
+                {!isBusy && leagues && leagues.map ? displayLeagues() : null}
                 <Row
                     className={classes.cardRow}
                     wrap
