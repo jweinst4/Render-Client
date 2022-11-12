@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Column, Row } from 'simple-flexbox';
 import { createUseStyles } from 'react-jss';
-import MiniCardComponent from 'components/cards/MiniCardComponent';
+import CardComponent from 'components/cards/CardComponent';
 import LoadingComponent from 'components/loading';
 
 const useStyles = createUseStyles({
@@ -51,7 +51,7 @@ function LeaguesComponent() {
 
     useEffect(() => {
         setBusy(true);
-        const getDatas = async () => {
+        const getUserById = async () => {
             const url = process.env.REACT_APP_SERVER_URL + "users/335a84d2-003a-4672-bbbd-491ed116159c"
             const response = await fetch(url,
                 {
@@ -65,81 +65,49 @@ function LeaguesComponent() {
             setLeagues(data);
             setBusy(false);
         }
-        getDatas()
+        getUserById()
     }, []);
 
-    function displayLeagues() {
-        return (
-            leagues.map((user) => (
-                <div key={user.commander}>
-                    <p>{user.commander}</p>
-                </div>
-            ))
-        )
-    };
-
     if (isBusy) {
-        console.log('is busy');
         return <LoadingComponent />
     }
 
     return (
         <Column>
-            <Row
-                className={classes.cardsContainer}
-                wrap
-                flexGrow={1}
-                horizontal='space-between'
-                breakpoints={{ 768: 'column' }}
-            >
-                {leagues && leagues.map ? displayLeagues() : null}
-                <Row
-                    className={classes.cardRow}
-                    wrap
-                    flexGrow={1}
-                    horizontal='space-between'
-                    breakpoints={{ 384: 'column' }}
-                >
-                    <MiniCardComponent
-                        className={classes.miniCardContainer}
-                        title='test'
-                        value='60'
-                    />
-                    <MiniCardComponent
-                        className={classes.miniCardContainer}
-                        title='Overdue'
-                        value='16'
-                    />
-                </Row>
-                <Row
-                    className={classes.cardRow}
-                    wrap
-                    flexGrow={1}
-                    horizontal='space-between'
-                    breakpoints={{ 384: 'column' }}
-                >
-                    <MiniCardComponent
-                        className={classes.miniCardContainer}
-                        title='Open'
-                        value='43'
-                    />
-                    <MiniCardComponent
-                        className={classes.miniCardContainer}
-                        title='On hold'
-                        value='64'
-                    />
-                </Row>
+            <Row alignSelf='stretch'>
+                <Column flexGrow={1}>
+                    <Row
+                        className={classes.cardRow}
+                        breakpoints={{ 384: 'column' }}
+                    >
+                        <span>Header</span>
+                    </Row>
+                </Column>
             </Row>
-            <div className={classes.todayTrends}>
+            {leagues && leagues.map ? leagues.map((league) => (
+                <Row alignSelf='stretch'>
+                    <Column flexGrow={1}>
+                        <Row
+                            className={classes.cardRow}
+                            breakpoints={{ 384: 'column' }}
+                        >
+                            <CardComponent
+                                title={league.name + " Season " + league.season}
+                                link='View details'
+                                subtitle='Commander:'
+                                subtitleTwo={league.commander}
+                                items={[
+                                    <Row horizontal='space-between' vertical='center'>
+                                        <span>Result: {league.result}</span>
+                                        <span>Points Per Match: {league.pointspermatch}</span>
+                                        <span>Moxfield URL: {league.url}</span>
+                                    </Row>
 
-            </div>
-            <Row
-                horizontal='space-between'
-                className={classes.lastRow}
-                breakpoints={{ 1024: 'column' }}
-            >
-
-            </Row>
+                                ]}
+                            />
+                        </Row>
+                    </Column>
+                </Row>)) : null}
         </Column>
     );
 }
