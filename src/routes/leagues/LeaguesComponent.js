@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Column, Row } from 'simple-flexbox';
 import { createUseStyles } from 'react-jss';
 import MiniCardComponent from 'components/cards/MiniCardComponent';
+import LoadingComponent from 'components/loading';
 
 const useStyles = createUseStyles({
     cardsContainer: {
@@ -46,8 +47,6 @@ const useStyles = createUseStyles({
 function LeaguesComponent() {
     const classes = useStyles();
     const [leagues, setLeagues] = useState(0);
-
-    const [data, setData] = useState();
     const [isBusy, setBusy] = useState(true)
 
     useEffect(() => {
@@ -79,6 +78,11 @@ function LeaguesComponent() {
         )
     };
 
+    if (isBusy) {
+        console.log('is busy');
+        return <LoadingComponent />
+    }
+
     return (
         <Column>
             <Row
@@ -88,7 +92,7 @@ function LeaguesComponent() {
                 horizontal='space-between'
                 breakpoints={{ 768: 'column' }}
             >
-                {!isBusy && leagues && leagues.map ? displayLeagues() : null}
+                {leagues && leagues.map ? displayLeagues() : null}
                 <Row
                     className={classes.cardRow}
                     wrap
