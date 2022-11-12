@@ -48,7 +48,7 @@ function LeaguesComponent() {
     const [leagues, setLeagues] = useState(0);
 
     const [data, setData] = useState();
-    const [isBusy, setBusy] = useState()
+    const [isBusy, setBusy] = useState(true)
 
     useEffect(() => {
         setBusy(true);
