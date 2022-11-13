@@ -1,6 +1,7 @@
 export const generalStates = {
   count: 0,
-  isLoggedIn: true
+  isLoggedIn: true,
+  isBusy: false
 }
 
 export const generalReducer = (state, action) => {
@@ -34,6 +35,16 @@ export const generalReducer = (state, action) => {
       return {
         ...state,
         isLoggedIn: false
+      };
+    case "SETISBUSY":
+      return {
+        ...state,
+        isBusy: true
+      };
+    case "RESETISBUSY":
+      return {
+        ...state,
+        isBusy: false
       };
     default:
       throw new Error("Unexpected action");

@@ -19,6 +19,12 @@ export const generalActions = (props) => {
     logout: () => {
       props.dispatch({ type: "LOGOUT" });
     },
+    setisbusy: () => {
+      props.dispatch({ type: "SETISBUSY" });
+    },
+    resetisbusy: () => {
+      props.dispatch({ type: "RESETISBUSY" });
+    },
   }
 }
 

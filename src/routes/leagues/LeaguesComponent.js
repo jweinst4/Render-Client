@@ -4,6 +4,7 @@ import { createUseStyles } from 'react-jss';
 import CardComponent from 'components/cards/CardComponent';
 import LoadingComponent from 'components/loading';
 import { StoreContext } from "../../context/store/storeContext";
+import LoadingOverlay from 'react-loading-overlay';
 
 const useStyles = createUseStyles({
     cardsContainer: {
@@ -48,13 +49,10 @@ const useStyles = createUseStyles({
 function LeaguesComponent() {
     const classes = useStyles();
     const [leagues, setLeagues] = useState(0);
-    const [isBusy, setBusy] = useState(true)
-    const { state, actions } = useContext(StoreContext);
+    const { actions, state } = useContext(StoreContext);
 
     useEffect(() => {
-        setBusy(true);
-        console.log('acctions');
-        console.log(actions);
+        actions.generalActions.setisbusy()
         const getUserById = async () => {
             const url = process.env.REACT_APP_SERVER_URL + "users/335a84d2-003a-4672-bbbd-491ed116159c"
             const response = await fetch(url,
@@ -67,17 +65,12 @@ function LeaguesComponent() {
                 });
             const data = await response.json();
             setLeagues(data);
-            setBusy(false);
+            actions.generalActions.resetisbusy()
         }
         getUserById()
     }, []);
 
-    if (isBusy) {
-        return <LoadingComponent />
-    }
-
     function logout() {
-        console.log('logging out')
         actions.generalActions.logout()
     }
 
@@ -85,18 +78,13 @@ function LeaguesComponent() {
         <Column>
             <Row alignSelf='stretch'>
                 <Column flexGrow={1}>
-                    <div style={{ backgroundColor: 'pink' }} onPress={() => {
-                        logout()
-                    }}>
-                        <Row
-                            className={classes.cardRow}
-                            breakpoints={{ 384: 'column' }}
-                            backgroundColo='red'
-                            onClick={logout}
-                        >
-                            <span >Logout</span>
-                        </Row>
-                    </div>
+                    <Row
+                        className={classes.cardRow}
+                        breakpoints={{ 384: 'column' }}
+                        onClick={logout}
+                    >
+                        <span >Logout</span>
+                    </Row>
                 </Column>
             </Row>
             <Row alignSelf='stretch'>
@@ -110,7 +98,7 @@ function LeaguesComponent() {
                 </Column>
             </Row>
             {leagues && leagues.map ? leagues.map((league) => (
-                <Row alignSelf='stretch'>
+                <Row alignSelf='stretch' key={league.name + league.commander}>
                     <Column flexGrow={1}>
                         <Row
                             className={classes.cardRow}
