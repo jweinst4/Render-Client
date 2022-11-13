@@ -1,35 +1,20 @@
-import React, { useContext } from 'react';
-import { Column, Row } from 'simple-flexbox';
-import { GoogleLogin } from '@react-oauth/google';
+import { useContext } from 'react';
 import { StoreContext } from "../../context/store/storeContext";
+import { useGoogleOneTapLogin } from '@react-oauth/google';
 
 function LoginComponent() {
     const { actions } = useContext(StoreContext);
-    // const history = useHistory();
 
-    const responseGoogle = (response) => {
-        actions.generalActions.login()
-    }
+    useGoogleOneTapLogin({
+        onSuccess: credentialResponse => {
+            actions.generalActions.login()
+        },
+        onError: () => {
+            console.log('Login Failed');
+        },
+    });
 
-    return (
-        <Column>
-            <Row alignSelf='stretch'>
-                <Column flexGrow={1}>
-                    <GoogleLogin
-                        onSuccess={credentialResponse => {
-                            responseGoogle(credentialResponse);
-                        }}
-
-                        onError={() => {
-                            console.log('Login Failed');
-                        }}
-
-                        useOneTap
-                    />;
-                </Column>
-            </Row>
-        </Column>
-    );
+    return null;
 }
 
 export default LoginComponent;
