@@ -1,4 +1,5 @@
 import React from 'react';
+import { StoreProvider } from "./context/store/storeContext";
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { ThemeProvider } from 'react-jss';
@@ -6,14 +7,23 @@ import Theme from 'resources/theme';
 import Routes from 'routes';
 import './index.css';
 import * as serviceWorker from './serviceWorker';
+import { GoogleOAuthProvider } from '@react-oauth/google';
 require('dotenv').config()
+
+
 
 ReactDOM.render(
     <ThemeProvider theme={Theme}>
-        <Router>
-            <Routes />
-        </Router>
-    </ThemeProvider>,
+        <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}>
+            <StoreProvider>
+                <Router>
+                    <Routes />
+                </Router>
+            </StoreProvider>
+        </GoogleOAuthProvider>
+
+    </ThemeProvider>
+    ,
     document.getElementById('root')
 );
 

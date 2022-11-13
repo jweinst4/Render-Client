@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Column, Row } from 'simple-flexbox';
 import { createUseStyles } from 'react-jss';
 import CardComponent from 'components/cards/CardComponent';
 import LoadingComponent from 'components/loading';
+import { StoreContext } from "../../context/store/storeContext";
 
 const useStyles = createUseStyles({
     cardsContainer: {
@@ -48,9 +49,12 @@ function LeaguesComponent() {
     const classes = useStyles();
     const [leagues, setLeagues] = useState(0);
     const [isBusy, setBusy] = useState(true)
+    const { state, actions } = useContext(StoreContext);
 
     useEffect(() => {
         setBusy(true);
+        console.log('acctions');
+        console.log(actions);
         const getUserById = async () => {
             const url = process.env.REACT_APP_SERVER_URL + "users/335a84d2-003a-4672-bbbd-491ed116159c"
             const response = await fetch(url,
@@ -72,8 +76,29 @@ function LeaguesComponent() {
         return <LoadingComponent />
     }
 
+    function logout() {
+        console.log('logging out')
+        actions.generalActions.logout()
+    }
+
     return (
         <Column>
+            <Row alignSelf='stretch'>
+                <Column flexGrow={1}>
+                    <div style={{ backgroundColor: 'pink' }} onPress={() => {
+                        logout()
+                    }}>
+                        <Row
+                            className={classes.cardRow}
+                            breakpoints={{ 384: 'column' }}
+                            backgroundColo='red'
+                            onClick={logout}
+                        >
+                            <span >Logout</span>
+                        </Row>
+                    </div>
+                </Column>
+            </Row>
             <Row alignSelf='stretch'>
                 <Column flexGrow={1}>
                     <Row
@@ -92,15 +117,15 @@ function LeaguesComponent() {
                             breakpoints={{ 384: 'column' }}
                         >
                             <CardComponent
-                                title={league.name + " Season " + league.season}
+                                title={league.name && league.season ? league.name + " Season " + league.season : null}
                                 link='View details'
                                 subtitle='Commander:'
-                                subtitleTwo={league.commander}
+                                subtitleTwo={league.commander ? league.commander : null}
                                 items={[
                                     <Row horizontal='space-between' vertical='center'>
-                                        <span>Result: {league.result}</span>
-                                        <span>Points Per Match: {league.pointspermatch}</span>
-                                        <span>Moxfield URL: {league.url}</span>
+                                        {league.result ? <span>Result: {league.result}</span> : null}
+                                        {league.pointspermatch ? <span>Points Per Match: {league.pointspermatch}</span> : null}
+                                        {league.url ? <span>Moxfield URL: {league.url}</span> : null}
                                     </Row>
 
                                 ]}
