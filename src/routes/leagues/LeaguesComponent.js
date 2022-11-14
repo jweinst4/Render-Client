@@ -44,7 +44,6 @@ const useStyles = createUseStyles({
     }
 });
 
-
 function LeaguesComponent() {
     const classes = useStyles();
     const [leagues, setLeagues] = useState(0);
@@ -69,9 +68,6 @@ function LeaguesComponent() {
         getUserById()
     }, []);
 
-    function logout() {
-        actions.generalActions.logout()
-    }
 
     if (state.generalStates.isBusy) {
         return <LoadingComponent loading />
