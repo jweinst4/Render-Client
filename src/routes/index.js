@@ -16,7 +16,15 @@ function Routes() {
         window.scrollTo(0, 0);
     }, [pathname]);
 
-    return state.generalStates.isLoggedIn ? <PrivateSection /> : <PublicRoutes />;
+    return state.generalStates.isLoggedIn ?
+        <LoadingOverlay
+            active={state.generalStates.isBusy}
+            spinner
+            text='Loading your content...'
+        >
+            <PrivateSection />
+        </LoadingOverlay> :
+        <PublicRoutes />;
 }
 
 export default Routes;
