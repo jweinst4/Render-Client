@@ -1,6 +1,6 @@
 export const generalStates = {
   count: 0,
-  isLoggedIn: true,
+  isLoggedIn: false,
   isBusy: false,
   user: {}
 }

@@ -74,27 +74,6 @@ function LeaguesComponent() {
 
     return (
         <Column>
-            <Row alignSelf='stretch'>
-                <Column flexGrow={1}>
-                    <Row
-                        className={classes.cardRow}
-                        breakpoints={{ 384: 'column' }}
-                        onClick={logout}
-                    >
-                        <span >Logout</span>
-                    </Row>
-                </Column>
-            </Row>
-            <Row alignSelf='stretch'>
-                <Column flexGrow={1}>
-                    <Row
-                        className={classes.cardRow}
-                        breakpoints={{ 384: 'column' }}
-                    >
-                        <span>Header</span>
-                    </Row>
-                </Column>
-            </Row>
             {leagues && leagues.map ? leagues.map((league) => (
                 <Row alignSelf='stretch' key={league.name + league.commander}>
                     <Column flexGrow={1}>
