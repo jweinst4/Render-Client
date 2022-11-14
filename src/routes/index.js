@@ -4,6 +4,7 @@ import useWindowSize from 'hooks/useWindowSize';
 import PrivateSection from 'routes/PrivateSection';
 import PublicRoutes from 'routes/PublicRoutes';
 import { StoreContext } from "../context/store/storeContext";
+import LoadingOverlay from 'react-loading-overlay';
 
 function Routes() {
     const { state } = useContext(StoreContext);
