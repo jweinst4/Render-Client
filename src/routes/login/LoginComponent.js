@@ -17,7 +17,8 @@ function LoginComponent() {
 
     useGoogleOneTapLogin({
         onSuccess: credentialResponse => {
-            const information = parseJwt(credentialResponse.credential)
+            const user = parseJwt(credentialResponse.credential)
+            actions.generalActions.setUser(user)
             actions.generalActions.login()
         },
         onError: () => {

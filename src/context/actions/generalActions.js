@@ -25,9 +25,13 @@ export const generalActions = (props) => {
     resetisbusy: () => {
       props.dispatch({ type: "RESETISBUSY" });
     },
+    setUser: (data) => {
+      externSetValue(props, data);
+    },
   }
 }
 
 function externSetValue(props, data) {
   props.dispatch({ type: "SET_VALUE", data });
+  props.dispatch({ type: "SET_USER", data });
 }

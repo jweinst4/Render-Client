@@ -2,9 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { Column, Row } from 'simple-flexbox';
 import { createUseStyles } from 'react-jss';
 import CardComponent from 'components/cards/CardComponent';
-import LoadingComponent from 'components/loading';
 import { StoreContext } from "../../context/store/storeContext";
-import LoadingOverlay from 'react-loading-overlay';
 
 const useStyles = createUseStyles({
     cardsContainer: {
@@ -49,7 +47,7 @@ const useStyles = createUseStyles({
 function LeaguesComponent() {
     const classes = useStyles();
     const [leagues, setLeagues] = useState(0);
-    const { actions, state } = useContext(StoreContext);
+    const { actions } = useContext(StoreContext);
 
     useEffect(() => {
         actions.generalActions.setisbusy()

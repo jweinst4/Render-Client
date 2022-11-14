@@ -7,6 +7,7 @@ import { SidebarContext } from 'hooks/useSidebar';
 import SLUGS from 'resources/slugs';
 import { IconBell, IconSearch } from 'assets/icons';
 import DropdownComponent from 'components/dropdown';
+import { StoreContext } from "../../context/store/storeContext";
 
 const useStyles = createUseStyles((theme) => ({
     avatar: {
@@ -64,6 +65,11 @@ function HeaderComponent() {
     const { currentItem } = useContext(SidebarContext);
     const theme = useTheme();
     const classes = useStyles({ theme });
+    const { state, actions } = useContext(StoreContext);
+
+    function logout() {
+        actions.generalActions.logout()
+    }
 
     let title;
     switch (true) {
@@ -140,7 +146,7 @@ function HeaderComponent() {
                 <DropdownComponent
                     label={
                         <>
-                            <span className={classes.name}>Germán Llorente</span>
+                            <span className={classes.name}>{state.generalStates.user.given_name}</span>
                             <img
                                 src='https://upload.wikimedia.org/wikipedia/commons/3/39/Flag_of_Stamford%2C_Connecticut.svg'
                                 alt='avatar'
@@ -155,7 +161,7 @@ function HeaderComponent() {
                         },
                         {
                             label: 'Logout',
-                            onClick: () => console.log('logout')
+                            onClick: () => { logout() }
                         }
                     ]}
                     position={{
