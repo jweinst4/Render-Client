@@ -4,7 +4,6 @@ import useWindowSize from 'hooks/useWindowSize';
 import PrivateSection from 'routes/PrivateSection';
 import PublicRoutes from 'routes/PublicRoutes';
 import { StoreContext } from "../context/store/storeContext";
-import LoadingOverlay from 'react-loading-overlay';
 
 function Routes() {
     const { state } = useContext(StoreContext);
@@ -18,14 +17,7 @@ function Routes() {
     }, [pathname]);
 
     return state.generalStates.isLoggedIn ?
-        <LoadingOverlay
-            active={state.generalStates.isBusy}
-            spinner
-            text='Loading your content...'
-        >
-            <PrivateSection />
-        </LoadingOverlay> :
-        <PublicRoutes />;
+        <PrivateSection /> : <PublicRoutes />;
 }
 
 export default Routes;

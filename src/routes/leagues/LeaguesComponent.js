@@ -3,6 +3,7 @@ import { Column, Row } from 'simple-flexbox';
 import { createUseStyles } from 'react-jss';
 import CardComponent from 'components/cards/CardComponent';
 import { StoreContext } from "../../context/store/storeContext";
+import LoadingComponent from '../../components/loading';
 
 const useStyles = createUseStyles({
     cardsContainer: {
@@ -47,7 +48,7 @@ const useStyles = createUseStyles({
 function LeaguesComponent() {
     const classes = useStyles();
     const [leagues, setLeagues] = useState(0);
-    const { actions } = useContext(StoreContext);
+    const { actions, state } = useContext(StoreContext);
 
     useEffect(() => {
         actions.generalActions.setisbusy()
@@ -70,6 +71,10 @@ function LeaguesComponent() {
 
     function logout() {
         actions.generalActions.logout()
+    }
+
+    if (state.generalStates.isBusy) {
+        return <LoadingComponent loading />
     }
 
     return (
