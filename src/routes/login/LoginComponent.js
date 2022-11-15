@@ -4,6 +4,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { Column, Row } from 'simple-flexbox';
 import useWindowSize from '../../hooks/useWindowSize';
 import axios from 'axios';
+import LoadingComponent from '../../components/loading';
 
 function LoginComponent() {
     const { actions, state } = useContext(StoreContext);
@@ -12,6 +13,7 @@ function LoginComponent() {
     const googleLogin = useGoogleLogin({
         // flow: 'auth-code',
         onSuccess: async (codeResponse) => {
+            actions.generalActions.setisbusy()
             const url = process.env.REACT_APP_SERVER_URL + "login"
             axios({
                 url: url,
@@ -22,6 +24,7 @@ function LoginComponent() {
                 }
             }).then(res => {
                 actions.generalActions.setUser(res.data);
+                actions.generalActions.resetisbusy()
                 actions.generalActions.login()
             }).catch(error => {
                 console.log(error)
@@ -43,6 +46,7 @@ function LoginComponent() {
 
     useGoogleOneTapLogin({
         onSuccess: credentialResponse => {
+            actions.generalActions.setisbusy()
             const url = process.env.REACT_APP_SERVER_URL + "login"
             axios({
                 url: url,
@@ -53,6 +57,7 @@ function LoginComponent() {
                 }
             }).then(res => {
                 actions.generalActions.setUser(res.data);
+                actions.generalActions.resetisbusy()
                 actions.generalActions.login()
             }).catch(error => {
                 console.log(error)
@@ -62,6 +67,10 @@ function LoginComponent() {
             console.log('Login Failed');
         },
     });
+
+    if (state.generalStates.isBusy) {
+        return <LoadingComponent loading />
+    }
 
     return (
         <Column style={{
