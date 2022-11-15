@@ -5,9 +5,11 @@
     "homepage": "https://llorentegerman.github.io/react-admin-dashboard",
     "dependencies": {
         "@react-oauth/google": "^0.4.0",
+        "axios": "^1.1.3",
         "dotenv": "^16.0.3",
         "prop-types": "^15.7.2",
         "react": "^16.13.1",
+        "react-axios": "^2.0.6",
         "react-burger-menu": "^2.6.13",
         "react-collapsible-content": "^1.0.0",
         "react-dom": "^16.8.6",

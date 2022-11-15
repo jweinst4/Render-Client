@@ -21,7 +21,6 @@ ReactDOM.render(
                 </Router>
             </StoreProvider>
         </GoogleOAuthProvider>
-
     </ThemeProvider>
     ,
     document.getElementById('root')

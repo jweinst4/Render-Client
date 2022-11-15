@@ -146,7 +146,7 @@ function HeaderComponent() {
                 <DropdownComponent
                     label={
                         <>
-                            <span className={classes.name}>{state.generalStates.user.given_name}</span>
+                            <span className={classes.name}>{state.generalStates.user.email}</span>
                             <img
                                 src='https://upload.wikimedia.org/wikipedia/commons/3/39/Flag_of_Stamford%2C_Connecticut.svg'
                                 alt='avatar'
