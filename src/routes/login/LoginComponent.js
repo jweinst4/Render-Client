@@ -1,67 +1,39 @@
 import { StoreContext } from "../../context/store/storeContext";
 import { useGoogleOneTapLogin, useGoogleLogin } from '@react-oauth/google';
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useContext } from 'react';
 import { Column, Row } from 'simple-flexbox';
 import useWindowSize from '../../hooks/useWindowSize';
-import axios from 'axios';
 import LoadingComponent from '../../components/loading';
+import * as apiServices from '../../resources/api';
+const url = process.env.REACT_APP_SERVER_URL + "login"
 
 function LoginComponent() {
     const { actions, state } = useContext(StoreContext);
     const [width, height] = useWindowSize();
 
-    const googleLogin = useGoogleLogin({
-        // flow: 'auth-code',
-        onSuccess: async (codeResponse) => {
-            actions.generalActions.setisbusy()
-            const url = process.env.REACT_APP_SERVER_URL + "login"
-            axios({
-                url: url,
-                method: "POST",
-                data: {
-                    "credential": codeResponse.access_token,
-                    "type": "bearer"
-                }
-            }).then(res => {
+    const login = async (token, type) => {
+        actions.generalActions.setisbusy()
+
+        apiServices.login(url, token, type)
+            .then(res => {
                 actions.generalActions.setUser(res.data);
                 actions.generalActions.resetisbusy()
                 actions.generalActions.login()
-            }).catch(error => {
-                console.log(error)
             })
+            .catch(err => console.log(err.response))
+    }
+
+    const googleLogin = useGoogleLogin({
+        onSuccess: async (codeResponse) => {
+            login(codeResponse.access_token, "bearer");
         },
         onError: errorResponse => console.log(errorResponse),
     });
 
-    function parseJwt(token) {
-        console.log('parse jwt');
-        var base64Url = token.split('.')[1];
-        var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-        var jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function (c) {
-            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-        }).join(''));
-
-        return JSON.parse(jsonPayload);
-    }
-
     useGoogleOneTapLogin({
         onSuccess: credentialResponse => {
-            actions.generalActions.setisbusy()
-            const url = process.env.REACT_APP_SERVER_URL + "login"
-            axios({
-                url: url,
-                method: "POST",
-                data: {
-                    "credential": credentialResponse.credential,
-                    "type": "access"
-                }
-            }).then(res => {
-                actions.generalActions.setUser(res.data);
-                actions.generalActions.resetisbusy()
-                actions.generalActions.login()
-            }).catch(error => {
-                console.log(error)
-            })
+            login(credentialResponse.credential, "access");
+
         },
         onError: () => {
             console.log('Login Failed');

@@ -1,6 +1,6 @@
 import { initialState, reducer } from "../reducers/reducers";
 import { useActions } from "../actions";
-import React, { createContext, useReducer, useEffect } from "react";
+import React, { createContext, useReducer } from "react";
 
 const StoreContext = createContext(initialState);
 
