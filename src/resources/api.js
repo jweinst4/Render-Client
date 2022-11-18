@@ -65,6 +65,7 @@ export function login(url, token, type) {
                 "type": "bearer",
                 headers: {
                     "Content-type": "application/json; charset=UTF-8",
+                    "Access-Control-Allow-Origin": "https://edh-league-client.onrender.com"
                 }
             },
         })
