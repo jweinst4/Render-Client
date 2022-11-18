@@ -16,7 +16,11 @@ function LoginComponent() {
 
         apiServices.login(url, token, type)
             .then(res => {
-                actions.generalActions.setUser(res.data);
+                console.log(' ');
+                console.log('res here');
+                console.log(res)
+                console.log(' ');
+                actions.generalActions.setUser(res);
                 actions.generalActions.resetisbusy()
                 actions.generalActions.login()
             })
