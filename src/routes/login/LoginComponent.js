@@ -5,7 +5,7 @@ import { Column, Row } from 'simple-flexbox';
 import useWindowSize from '../../hooks/useWindowSize';
 import LoadingComponent from '../../components/loading';
 import * as apiServices from '../../resources/api';
-const url = process.env.REACT_APP_SERVER_URL + "login"
+const url = process.env.REACT_APP_SERVER_URL + "api/auth/login"
 
 function LoginComponent() {
     const { actions, state } = useContext(StoreContext);
@@ -33,7 +33,6 @@ function LoginComponent() {
     useGoogleOneTapLogin({
         onSuccess: credentialResponse => {
             login(credentialResponse.credential, "access");
-
         },
         onError: () => {
             console.log('Login Failed');

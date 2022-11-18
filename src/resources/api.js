@@ -7,12 +7,18 @@ export function login(url, token, type) {
             method: "POST",
             data: {
                 "credential": token,
-                "type": type
+                "type": "bearer"
             }
         })
             .then(res => {
+                console.log('res');
+                console.log(res);
                 resolve(res)
             })
-            .catch(err => reject(err))
+            .catch(err => {
+                console.log('error');
+                console.log(err.response.data)
+                reject(err)
+            })
     })
 }

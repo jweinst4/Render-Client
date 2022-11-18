@@ -47,18 +47,18 @@ function SidebarComponent() {
                 <LogoComponent />
             </div>
             <MenuItem
-                id={SLUGS.dashboard}
+                id={SLUGS.leagues}
                 title='Leagues'
                 icon={IconSubscription}
                 onClick={() => onClick(SLUGS.leagues)}
             />
-            <MenuItem
+            {/* <MenuItem
                 id={SLUGS.dashboard}
                 title='SSS'
                 icon={IconSubscription}
                 onClick={() => onClick(SLUGS.dashboard)}
-            />
-            <MenuItem
+            /> */}
+            {/* <MenuItem
                 id={SLUGS.overview}
                 items={[SLUGS.overviewTwo, SLUGS.overviewThree]}
                 title='Overview'
@@ -143,7 +143,7 @@ function SidebarComponent() {
                 title='Subscription'
                 icon={IconSubscription}
                 onClick={() => onClick(SLUGS.subscription)}
-            />
+            /> */}
             <div className={classes.separator}></div>
             <MenuItem
                 id={SLUGS.settings}
