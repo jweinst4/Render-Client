@@ -7,8 +7,11 @@ export function login(url, token, type) {
             method: "POST",
             data: {
                 "credential": token,
-                "type": "bearer"
-            }
+                "type": "bearer",
+                headers: {
+                    "Content-type": "application/json; charset=UTF-8",
+                }
+            },
         })
             .then(res => {
                 console.log('res');
