@@ -16,13 +16,13 @@ function LoginComponent() {
         actions.generalActions.setisbusy()
         console.log('after busy');
 
-        apiServices.login(url, token, type)
+        await apiServices.login(url, token, type)
             .then(res => {
                 console.log(' ');
                 console.log('res here');
                 console.log(res)
                 console.log(' ');
-                actions.generalActions.setUser(res);
+                actions.generalActions.setUser(res.data);
                 actions.generalActions.resetisbusy()
                 actions.generalActions.login()
             })
