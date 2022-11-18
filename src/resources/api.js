@@ -22,7 +22,7 @@ export function login(url, token, type) {
             })
             .catch(err => {
                 console.log('error');
-                console.log(err.response.data)
+                console.log(err);
                 reject(err)
             })
 
