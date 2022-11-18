@@ -12,7 +12,9 @@ function LoginComponent() {
     const [width, height] = useWindowSize();
 
     const login = async (token, type) => {
+        console.log('before busy')
         actions.generalActions.setisbusy()
+        console.log('after busy');
 
         apiServices.login(url, token, type)
             .then(res => {
