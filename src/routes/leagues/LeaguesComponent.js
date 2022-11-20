@@ -52,17 +52,19 @@ function LeaguesComponent() {
     useEffect(() => {
         actions.generalActions.setisbusy()
         const getUserById = async () => {
-            const url = process.env.REACT_APP_SERVER_URL + "users/335a84d2-003a-4672-bbbd-491ed116159c"
+            const url = process.env.REACT_APP_SERVER_URL + "api/user/" + state.generalStates.user.id
             const response = await fetch(url,
                 {
                     method: "GET",
                     headers: {
                         "access-control-allow-origin": "*",
-                        "Content-type": "application/json; charset=UTF-8"
+                        "Content-type": "application/json; charset=UTF-8",
+                        "x-access-token": state.generalStates.user.accessToken
                     }
                 });
             const data = await response.json();
-            setLeagues(data);
+            console.log(data);
+            // setLeagues(data);
             actions.generalActions.resetisbusy()
         }
         getUserById()
