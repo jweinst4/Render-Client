@@ -7,10 +7,6 @@ export function login(token, type) {
         {
             "credential": token,
             "type": type,
-            headers: {
-                "Content-type": "application/json; charset=UTF-8",
-                "Access-Control-Allow-Origin": "https://edh-league-client.onrender.com"
-            }
         }
         axios({
             url: url + "api/auth/login",
@@ -37,6 +33,30 @@ export function getUserById(id, accessToken) {
                 "access-control-allow-origin": "*",
                 "Content-type": "application/json; charset=UTF-8",
                 "x-access-token": accessToken
+            }
+        })
+            .then(res => {
+                resolve(res)
+            })
+            .catch(err => {
+                console.log('error');
+                console.log(err.response.data)
+                reject(err)
+            })
+    })
+}
+
+export function createLeague(accessToken, userId, leagueName) {
+    return new Promise((resolve, reject) => {
+        axios({
+            url: url + "api/user/createleague",
+            method: "POST",
+            headers: {
+                "x-access-token": accessToken
+            },
+            data: {
+                "userId": userId,
+                "leagueName": leagueName
             }
         })
             .then(res => {

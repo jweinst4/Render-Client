@@ -53,14 +53,7 @@ function LeaguesComponent() {
         actions.generalActions.setisbusy()
         await apiServices.getUserById(state.generalStates.user.id, state.generalStates.user.accessToken)
             .then(res => {
-                if (JSON.stringify(res.data) === JSON.stringify(state.generalStates.user)) {
-                    console.log('no need to update user')
-                }
-                else {
-                    console.log('need to update user')
-                    console.log(state.generalStates.user)
-                    console.log(res.data);
-                }
+                actions.generalActions.setUser(res.data)
                 actions.generalActions.resetisbusy()
             })
             .catch(err => console.log(err.response))
@@ -76,21 +69,31 @@ function LeaguesComponent() {
             <Row
                 className={classes.cardRow}
                 breakpoints={{ 384: 'column' }}
-                onClick={() => {
-
+                onClick={async () => {
+                    await apiServices.createLeague(state.generalStates.user.accessToken, state.generalStates.user.id, 'Tester')
+                        .then(res => {
+                            actions.generalActions.setUser(res.data)
+                        })
+                        .catch(err => console.log(err.response))
                 }}
             >
                 Add League
             </Row>
+            <Row
+                className={classes.cardRow}
+                breakpoints={{ 384: 'column' }}
+            >
+                League Count: {state.generalStates.user.leagues.length}
+            </Row>
             {state.generalStates.user.leagues && state.generalStates.user.leagues.map ? state.generalStates.user.leagues.map((league) => (
-                <Row alignSelf='stretch' key={league.name + league.commander}>
+                <Row alignSelf='stretch' key={league.id}>
                     <Column flexGrow={1}>
                         <Row
                             className={classes.cardRow}
                             breakpoints={{ 384: 'column' }}
                         >
                             <CardComponent
-                                title={league.name && league.season ? league.name + " Season " + league.season : null}
+                                title={league.name && league.id ? league.name + "-" + league.id : null}
                                 link='View details'
                                 subtitle='Commander:'
                                 subtitleTwo={league.commander ? league.commander : null}
