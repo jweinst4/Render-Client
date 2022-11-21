@@ -4,6 +4,7 @@ import { createUseStyles } from 'react-jss';
 import CardComponent from 'components/cards/CardComponent';
 import { StoreContext } from "../../context/store/storeContext";
 import LoadingComponent from '../../components/loading';
+import * as apiServices from '../../resources/api';
 
 const useStyles = createUseStyles({
     cardsContainer: {
@@ -46,28 +47,21 @@ const useStyles = createUseStyles({
 
 function LeaguesComponent() {
     const classes = useStyles();
-    const [leagues, setLeagues] = useState(0);
     const { actions, state } = useContext(StoreContext);
 
-    useEffect(() => {
+    useEffect(async () => {
         actions.generalActions.setisbusy()
-        const getUserById = async () => {
-            const url = process.env.REACT_APP_SERVER_URL + "api/user/" + state.generalStates.user.id
-            const response = await fetch(url,
-                {
-                    method: "GET",
-                    headers: {
-                        "access-control-allow-origin": "*",
-                        "Content-type": "application/json; charset=UTF-8",
-                        "x-access-token": state.generalStates.user.accessToken
-                    }
-                });
-            const data = await response.json();
-            console.log(data);
-            // setLeagues(data);
-            actions.generalActions.resetisbusy()
-        }
-        getUserById()
+        await apiServices.getUserById(state.generalStates.user.id, state.generalStates.user.accessToken)
+            .then(res => {
+                if (JSON.stringify(res.data) === JSON.stringify(state.generalStates.user)) {
+                    console.log('no need to update user')
+                }
+                else {
+                    console.log('need to update user')
+                }
+                actions.generalActions.resetisbusy()
+            })
+            .catch(err => console.log(err.response))
     }, []);
 
 
@@ -77,7 +71,16 @@ function LeaguesComponent() {
 
     return (
         <Column>
-            {leagues && leagues.map ? leagues.map((league) => (
+            <Row
+                className={classes.cardRow}
+                breakpoints={{ 384: 'column' }}
+                onClick={() => {
+
+                }}
+            >
+                Add League
+            </Row>
+            {state.generalStates.user.leagues && state.generalStates.user.leagues.map ? state.generalStates.user.leagues.map((league) => (
                 <Row alignSelf='stretch' key={league.name + league.commander}>
                     <Column flexGrow={1}>
                         <Row
@@ -100,7 +103,15 @@ function LeaguesComponent() {
                             />
                         </Row>
                     </Column>
-                </Row>)) : null}
+                </Row>)) : <Row
+                    className={classes.cardRow}
+                    breakpoints={{ 384: 'column' }}
+                    onClick={() => {
+
+                    }}
+                >
+                No Leagues
+            </Row>}
         </Column>
     );
 }

@@ -5,7 +5,6 @@ import { Column, Row } from 'simple-flexbox';
 import useWindowSize from '../../hooks/useWindowSize';
 import LoadingComponent from '../../components/loading';
 import * as apiServices from '../../resources/api';
-const url = process.env.REACT_APP_SERVER_URL + "api/auth/login"
 
 function LoginComponent() {
     const { actions, state } = useContext(StoreContext);
@@ -14,9 +13,8 @@ function LoginComponent() {
     const login = async (token, type) => {
         actions.generalActions.setisbusy()
 
-        await apiServices.login(url, token, type)
+        await apiServices.login(token, type)
             .then(res => {
-                console.log(res)
                 actions.generalActions.setUser(res.data);
                 actions.generalActions.resetisbusy()
                 actions.generalActions.login()
