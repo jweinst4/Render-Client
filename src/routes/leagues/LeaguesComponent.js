@@ -55,6 +55,8 @@ function LeaguesComponent() {
             .then(res => {
                 if (JSON.stringify(res.data) === JSON.stringify(state.generalStates.user)) {
                     console.log('no need to update user')
+                    console.log(state.generalStates.user)
+                    console.log(res.data);
                 }
                 else {
                     console.log('need to update user')
