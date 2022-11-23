@@ -25,6 +25,8 @@ export function login(token, type) {
 }
 
 export function getUserById(id, accessToken) {
+    console.log(id);
+    console.log(accessToken);
     return new Promise((resolve, reject) => {
         axios({
             url: url + "api/user/" + id,

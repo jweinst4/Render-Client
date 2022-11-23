@@ -15,6 +15,8 @@ function LoginComponent() {
 
         await apiServices.login(token, type)
             .then(res => {
+                console.log('set user');
+                console.log(res.data);
                 actions.generalActions.setUser(res.data);
                 actions.generalActions.resetisbusy()
                 actions.generalActions.login()
