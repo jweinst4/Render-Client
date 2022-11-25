@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { createUseStyles, useTheme } from 'react-jss';
 import { useHistory } from 'react-router-dom';
 import SLUGS from 'resources/slugs';
@@ -17,6 +17,7 @@ import { convertSlugToUrl } from 'resources/utilities';
 import LogoComponent from './LogoComponent';
 import Menu from './MenuComponent';
 import MenuItem from './MenuItemComponent';
+import { StoreContext } from "../../context/store/storeContext";
 
 const useStyles = createUseStyles({
     separator: {
@@ -32,9 +33,10 @@ function SidebarComponent() {
     const theme = useTheme();
     const classes = useStyles({ theme });
     const isMobile = window.innerWidth <= 1080;
+    const { state, actions } = useContext(StoreContext);
 
-    async function logout() {
-        push(SLUGS.login);
+    function logout() {
+        actions.generalActions.logout()
     }
 
     function onClick(slug, parameters = {}) {

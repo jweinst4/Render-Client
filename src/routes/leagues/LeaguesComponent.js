@@ -5,6 +5,11 @@ import CardComponent from 'components/cards/CardComponent';
 import { StoreContext } from "../../context/store/storeContext";
 import LoadingComponent from '../../components/loading';
 import * as apiServices from '../../resources/api';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { useForm } from 'react-hook-form';
+
+toast.configure()
 
 const useStyles = createUseStyles({
     cardsContainer: {
@@ -15,7 +20,8 @@ const useStyles = createUseStyles({
         marginTop: 30,
         '@media (max-width: 768px)': {
             marginTop: 0
-        }
+        },
+        flex: 0.6
     },
     miniCardContainer: {
         flexGrow: 1,
@@ -48,15 +54,35 @@ const useStyles = createUseStyles({
 function LeaguesComponent() {
     const classes = useStyles();
     const { actions, state } = useContext(StoreContext);
+    const {
+        register,
+        formState: { errors },
+        handleSubmit,
+    } = useForm({
+        mode: "onBlur",
+    });
 
-    useEffect(async () => {
-        actions.generalActions.setisbusy()
-        await apiServices.getUserById(state.generalStates.user.id, state.generalStates.user.accessToken)
-            .then(res => {
-                actions.generalActions.setUser(res.data)
-                actions.generalActions.resetisbusy()
-            })
-            .catch(err => console.log(err.response))
+    const {
+        register: register2,
+        formState: { errors: errors2 },
+        handleSubmit: handleSubmit2,
+    } = useForm({
+        mode: "onBlur",
+    });
+
+    useEffect(() => {
+        const fetchData = async () => {
+            actions.generalActions.setisbusy()
+            await apiServices.getUserById(state.generalStates.user.id, state.generalStates.user.accessToken)
+                .then(res => {
+                    actions.generalActions.setUser(res.data)
+                    actions.generalActions.resetisbusy();
+                })
+                .catch(err => console.log(err.response))
+        }
+
+        fetchData().catch(console.error);
+
     }, []);
 
 
@@ -64,56 +90,119 @@ function LeaguesComponent() {
         return <LoadingComponent loading />
     }
 
+    const renderLeagueDetails = (leagueId) => {
+        const leagueDesc = state.generalStates.user.leaguedetails.find(element => element.testings === leagueId)
+        const registrants = state.generalStates.user.leaguedetails.filter(detail => detail.testings === leagueId);
+
+        if (leagueDesc && registrants) {
+            return <CardComponent
+                title={leagueDesc.name}
+                link='View details'
+                subtitle={`Id: ${leagueId}`}
+                subtitleTwo={`Registrants: ${registrants.length}`}
+                items={
+                    registrants.map((registrant) => (
+                        <Row alignSelf='stretch' key={leagueId + registrant.email + Math.floor(Math.random() * 1000)} >{registrant.email} </Row>
+                    ))}
+            >
+            </CardComponent >
+        }
+        else {
+            return null
+        }
+    }
+
     return (
         <Column>
             <Row
-                className={classes.cardRow}
                 breakpoints={{ 384: 'column' }}
-                onClick={async () => {
-                    await apiServices.createLeague(state.generalStates.user.accessToken, state.generalStates.user.id, 'Tester')
+            >
+                <Row style={{ flex: .3 }}>
+                    Create League - League Name:
+                </Row>
+                <Row style={{ flex: .7 }}>
+                    <form id='createLeagueForm' style={{ backgroundColor: 'yellow' }} onSubmit={handleSubmit(async (data) => await apiServices.createLeague(state.generalStates.user.accessToken, state.generalStates.user.id, data.leagueName)
                         .then(res => {
                             actions.generalActions.setUser(res.data)
+                            document.getElementById("createLeagueForm").reset();
+                            toast('Succesfully Created A League', {
+                                position: "top-right",
+                                autoClose: 2000,
+                                hideProgressBar: true,
+                                type: "success",
+                                theme: "light",
+                            });
                         })
-                        .catch(err => console.log(err.response))
-                }}
-            >
-                Add League
+                        .catch(err => {
+                            console.log(err.response)
+                            toast('Unable To Create This League', {
+                                position: "top-right",
+                                autoClose: 2000,
+                                hideProgressBar: true,
+                                type: "error",
+                            });
+                        }))}>
+
+                        <input id='createLeague' {...register('leagueName', { required: true })} />
+                        <input type="submit" />
+                    </form>
+
+                </Row>
             </Row>
+            <Row
+                breakpoints={{ 384: 'column' }}
+            >
+                <Row style={{ flex: .3 }}>
+                    Join League - League Id:
+                </Row>
+                <Row style={{ flex: .7 }}>
+                    <form id='joinLeagueForm' onSubmit={handleSubmit2(async (data) => await apiServices.joinLeague(state.generalStates.user.accessToken, state.generalStates.user.id, data.leagueId)
+                        .then(res => {
+                            actions.generalActions.setUser(res.data)
+                            document.getElementById("joinLeagueForm").reset();
+                            toast('Succesfully Joined A League', {
+                                position: "top-right",
+                                autoClose: 2000,
+                                hideProgressBar: true,
+                                type: "success",
+                                theme: "light",
+                            });
+                        })
+                        .catch(err => {
+                            console.log(err.response)
+                            toast('Unable To Join This League', {
+                                position: "top-right",
+                                autoClose: 2000,
+                                hideProgressBar: true,
+                                type: "error",
+                            });
+                        }))}>
+                        <input id='joinLeague' {...register2('leagueId', { required: true })} />
+                        <input type="submit" />
+                    </form>
+
+                </Row>
+            </Row>
+
             <Row
                 className={classes.cardRow}
                 breakpoints={{ 384: 'column' }}
             >
-                League Count: {state.generalStates.user.leagues.length}
+                League Count: {state.generalStates.user.league_.length}
             </Row>
-            {state.generalStates.user.leagues && state.generalStates.user.leagues.map ? state.generalStates.user.leagues.map((league) => (
-                <Row alignSelf='stretch' key={league.id}>
+            {state.generalStates.user.league_ && state.generalStates.user.league_.map ? state.generalStates.user.league_.map((league) => (
+                <Row alignSelf='stretch' key={Math.floor(Math.random() * 1000)}>
                     <Column flexGrow={1}>
                         <Row
                             className={classes.cardRow}
                             breakpoints={{ 384: 'column' }}
                         >
-                            <CardComponent
-                                title={league.name && league.id ? league.name + "-" + league.id : null}
-                                link='View details'
-                                subtitle='Commander:'
-                                subtitleTwo={league.commander ? league.commander : null}
-                                items={[
-                                    <Row horizontal='space-between' vertical='center'>
-                                        {league.result ? <span>Result: {league.result}</span> : null}
-                                        {league.pointspermatch ? <span>Points Per Match: {league.pointspermatch}</span> : null}
-                                        {league.url ? <span>Moxfield URL: {league.url}</span> : null}
-                                    </Row>
-
-                                ]}
-                            />
+                            {renderLeagueDetails(league)}
                         </Row>
                     </Column>
                 </Row>)) : <Row
                     className={classes.cardRow}
                     breakpoints={{ 384: 'column' }}
-                    onClick={() => {
-
-                    }}
                 >
                 No Leagues
             </Row>}

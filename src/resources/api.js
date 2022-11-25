@@ -24,9 +24,7 @@ export function login(token, type) {
     })
 }
 
-export function getUserById(id, accessToken) {
-    console.log(id);
-    console.log(accessToken);
+export async function getUserById(id, accessToken) {
     return new Promise((resolve, reject) => {
         axios({
             url: url + "api/user/" + id,
@@ -59,6 +57,30 @@ export function createLeague(accessToken, userId, leagueName) {
             data: {
                 "userId": userId,
                 "leagueName": leagueName
+            }
+        })
+            .then(res => {
+                resolve(res)
+            })
+            .catch(err => {
+                console.log('error');
+                console.log(err.response.data)
+                reject(err)
+            })
+    })
+}
+
+export function joinLeague(accessToken, userId, leagueId) {
+    return new Promise((resolve, reject) => {
+        axios({
+            url: url + "api/user/joinleague",
+            method: "POST",
+            headers: {
+                "x-access-token": accessToken
+            },
+            data: {
+                "userId": userId,
+                "leagueId": leagueId
             }
         })
             .then(res => {
