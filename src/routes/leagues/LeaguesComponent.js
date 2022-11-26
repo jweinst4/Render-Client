@@ -7,7 +7,7 @@ import LoadingComponent from '../../components/loading';
 import * as apiServices from '../../resources/api';
 // import { toast } from 'react-toastify';
 // import 'react-toastify/dist/ReactToastify.css';
-// import { useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 
 // toast.configure()
 
@@ -54,21 +54,23 @@ const useStyles = createUseStyles({
 function LeaguesComponent() {
     const classes = useStyles();
     const { actions, state } = useContext(StoreContext);
-    // const {
-    //     register,
-    //     formState: { errors },
-    //     handleSubmit,
-    // } = useForm({
-    //     mode: "onBlur",
-    // });
+    const {
+        register,
+        formState: { errors },
+        handleSubmit,
+        reset
+    } = useForm({
+        mode: "onBlur",
+    });
 
-    // const {
-    //     register: register2,
-    //     formState: { errors: errors2 },
-    //     handleSubmit: handleSubmit2,
-    // } = useForm({
-    //     mode: "onBlur",
-    // });
+    const {
+        register: register2,
+        formState: { errors: errors2 },
+        handleSubmit: handleSubmit2,
+        reset: reset2
+    } = useForm({
+        mode: "onBlur",
+    });
 
     useEffect(() => {
         const fetchData = async () => {
@@ -121,31 +123,32 @@ function LeaguesComponent() {
                     Create League - League Name:
                 </Row>
                 <Row style={{ flex: .7 }}>
-                    {/* <form id='createLeagueForm' style={{ backgroundColor: 'yellow' }} onSubmit={handleSubmit(async (data) => await apiServices.createLeague(state.generalStates.user.accessToken, state.generalStates.user.id, data.leagueName)
+                    <form id='createLeagueForm' style={{ backgroundColor: 'yellow' }} onSubmit={handleSubmit(async (data) => await apiServices.createLeague(state.generalStates.user.accessToken, state.generalStates.user.id, data.leagueName)
                         .then(res => {
                             actions.generalActions.setUser(res.data)
-                            document.getElementById("createLeagueForm").reset();
-                            toast('Succesfully Created A League', {
-                                position: "top-right",
-                                autoClose: 2000,
-                                hideProgressBar: true,
-                                type: "success",
-                                theme: "light",
-                            });
+                            reset();
+                            // toast('Succesfully Created A League', {
+                            //     position: "top-right",
+                            //     autoClose: 2000,
+                            //     hideProgressBar: true,
+                            //     type: "success",
+                            //     theme: "light",
+                            // });
                         })
                         .catch(err => {
                             console.log(err.response)
-                            toast('Unable To Create This League', {
-                                position: "top-right",
-                                autoClose: 2000,
-                                hideProgressBar: true,
-                                type: "error",
-                            });
+                            reset();
+                            // toast('Unable To Create This League', {
+                            //     position: "top-right",
+                            //     autoClose: 2000,
+                            //     hideProgressBar: true,
+                            //     type: "error",
+                            // });
                         }))}>
 
                         <input id='createLeague' {...register('leagueName', { required: true })} />
                         <input type="submit" />
-                    </form> */}
+                    </form>
 
                 </Row>
             </Row>
@@ -156,30 +159,31 @@ function LeaguesComponent() {
                     Join League - League Id:
                 </Row>
                 <Row style={{ flex: .7 }}>
-                    {/* <form id='joinLeagueForm' onSubmit={handleSubmit2(async (data) => await apiServices.joinLeague(state.generalStates.user.accessToken, state.generalStates.user.id, data.leagueId)
+                    <form id='joinLeagueForm' onSubmit={handleSubmit2(async (data) => await apiServices.joinLeague(state.generalStates.user.accessToken, state.generalStates.user.id, data.leagueId)
                         .then(res => {
                             actions.generalActions.setUser(res.data)
-                            document.getElementById("joinLeagueForm").reset();
-                            toast('Succesfully Joined A League', {
-                                position: "top-right",
-                                autoClose: 2000,
-                                hideProgressBar: true,
-                                type: "success",
-                                theme: "light",
-                            });
+                            reset2();
+                            // toast('Succesfully Joined A League', {
+                            //     position: "top-right",
+                            //     autoClose: 2000,
+                            //     hideProgressBar: true,
+                            //     type: "success",
+                            //     theme: "light",
+                            // });
                         })
                         .catch(err => {
-                            console.log(err.response)
-                            toast('Unable To Join This League', {
-                                position: "top-right",
-                                autoClose: 2000,
-                                hideProgressBar: true,
-                                type: "error",
-                            });
+                            console.log(err.response);
+                            reset2();
+                            // toast('Unable To Join This League', {
+                            //     position: "top-right",
+                            //     autoClose: 2000,
+                            //     hideProgressBar: true,
+                            //     type: "error",
+                            // });
                         }))}>
                         <input id='joinLeague' {...register2('leagueId', { required: true })} />
                         <input type="submit" />
-                    </form> */}
+                    </form>
 
                 </Row>
             </Row>
