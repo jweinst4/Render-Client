@@ -159,28 +159,41 @@ function LeaguesComponent() {
                     Join League - League Id:
                 </Row>
                 <Row style={{ flex: .7 }}>
-                    <form id='joinLeagueForm' onSubmit={handleSubmit2(async (data) => await apiServices.joinLeague(state.generalStates.user.accessToken, state.generalStates.user.id, data.leagueId)
-                        .then(res => {
-                            actions.generalActions.setUser(res.data)
-                            reset2();
-                            toast('Succesfully Joined A League', {
+                    <form id='joinLeagueForm' onSubmit={handleSubmit2(async (data) => {
+                        if (!Number.isInteger(parseInt(data.leagueId))) {
+                            console.log('is an integer');
+                            toast('Please Type A Valid League Id', {
                                 position: "top-right",
                                 autoClose: 2000,
                                 hideProgressBar: true,
-                                type: "success",
+                                type: "warning",
                                 theme: "light",
                             });
-                        })
-                        .catch(err => {
-                            console.log(err.response);
-                            reset2();
-                            toast('Unable To Join This League', {
-                                position: "top-right",
-                                autoClose: 2000,
-                                hideProgressBar: true,
-                                type: "error",
-                            });
-                        }))}>
+                            return
+                        }
+                        await apiServices.joinLeague(state.generalStates.user.accessToken, state.generalStates.user.id, data.leagueId)
+                            .then(res => {
+                                actions.generalActions.setUser(res.data)
+                                reset2();
+                                toast('Succesfully Joined A League', {
+                                    position: "top-right",
+                                    autoClose: 2000,
+                                    hideProgressBar: true,
+                                    type: "success",
+                                    theme: "light",
+                                });
+                            })
+                            .catch(err => {
+                                console.log(err.response);
+                                reset2();
+                                toast('Unable To Join This League', {
+                                    position: "top-right",
+                                    autoClose: 2000,
+                                    hideProgressBar: true,
+                                    type: "error",
+                                });
+                            })
+                    })}>
                         <input id='joinLeague' {...register2('leagueId', { required: true })} />
                         <input type="submit" />
                     </form>
