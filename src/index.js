@@ -8,7 +8,6 @@ import Routes from 'routes';
 import './index.css';
 import * as serviceWorker from './serviceWorker';
 import { GoogleOAuthProvider } from '@react-oauth/google';
-require('dotenv').config()
 
 
 
