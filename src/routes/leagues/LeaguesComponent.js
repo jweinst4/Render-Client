@@ -138,7 +138,7 @@ function LeaguesComponent() {
                         .catch(err => {
                             console.log(err.response)
                             reset();
-                            toast('Unable To Create This League', {
+                            toast(err.response.data.message, {
                                 position: "top-right",
                                 autoClose: 2000,
                                 hideProgressBar: true,
@@ -152,6 +152,7 @@ function LeaguesComponent() {
 
                 </Row>
             </Row>
+            <br />
             <Row
                 breakpoints={{ 384: 'column' }}
             >
@@ -185,9 +186,8 @@ function LeaguesComponent() {
                                 });
                             })
                             .catch(err => {
-                                console.log(err.response);
                                 reset2();
-                                toast('Unable To Join This League', {
+                                toast(err.response.data.message, {
                                     position: "top-right",
                                     autoClose: 2000,
                                     hideProgressBar: true,

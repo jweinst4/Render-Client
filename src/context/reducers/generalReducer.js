@@ -27,6 +27,7 @@ export const generalReducer = (state, action) => {
         isBusy: false
       };
     case "SET_USER":
+      console.log('set user, ', action.data)
       return {
         ...state,
         user: action.data

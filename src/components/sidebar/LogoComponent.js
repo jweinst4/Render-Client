@@ -33,7 +33,7 @@ function LogoComponent() {
             onClick(SLUGS.overview)
         }} className={classes.container} horizontal='center' vertical='center'>
             <IconLogo />
-            <span className={classes.title}>Dashboard Kit</span>
+            <span className={classes.title}>League Lorem</span>
         </Row>
     );
 }
