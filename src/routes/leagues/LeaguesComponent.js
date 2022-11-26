@@ -160,8 +160,8 @@ function LeaguesComponent() {
                 </Row>
                 <Row style={{ flex: .7 }}>
                     <form id='joinLeagueForm' onSubmit={handleSubmit2(async (data) => {
-                        if (!Number.isInteger(parseInt(data.leagueId))) {
-                            console.log('is an integer');
+                        var regex = /^[0-9]+$/;
+                        if (!data.leagueId.match(regex)) {
                             toast('Please Type A Valid League Id', {
                                 position: "top-right",
                                 autoClose: 2000,
@@ -169,7 +169,8 @@ function LeaguesComponent() {
                                 type: "warning",
                                 theme: "light",
                             });
-                            return
+                            reset2();
+                            return;
                         }
                         await apiServices.joinLeague(state.generalStates.user.accessToken, state.generalStates.user.id, data.leagueId)
                             .then(res => {
