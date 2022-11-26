@@ -5,11 +5,10 @@ import CardComponent from 'components/cards/CardComponent';
 import { StoreContext } from "../../context/store/storeContext";
 import LoadingComponent from '../../components/loading';
 import * as apiServices from '../../resources/api';
-// import { toast } from 'react-toastify';
-// import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from 'react-toastify';
 import { useForm } from 'react-hook-form';
+import 'react-toastify/dist/ReactToastify.css';
 
-// toast.configure()
 
 const useStyles = createUseStyles({
     cardsContainer: {
@@ -116,6 +115,7 @@ function LeaguesComponent() {
 
     return (
         <Column>
+            <ToastContainer />
             <Row
                 breakpoints={{ 384: 'column' }}
             >
@@ -127,23 +127,23 @@ function LeaguesComponent() {
                         .then(res => {
                             actions.generalActions.setUser(res.data)
                             reset();
-                            // toast('Succesfully Created A League', {
-                            //     position: "top-right",
-                            //     autoClose: 2000,
-                            //     hideProgressBar: true,
-                            //     type: "success",
-                            //     theme: "light",
-                            // });
+                            toast('Succesfully Created A League', {
+                                position: "top-right",
+                                autoClose: 2000,
+                                hideProgressBar: true,
+                                type: "success",
+                                theme: "light",
+                            });
                         })
                         .catch(err => {
                             console.log(err.response)
                             reset();
-                            // toast('Unable To Create This League', {
-                            //     position: "top-right",
-                            //     autoClose: 2000,
-                            //     hideProgressBar: true,
-                            //     type: "error",
-                            // });
+                            toast('Unable To Create This League', {
+                                position: "top-right",
+                                autoClose: 2000,
+                                hideProgressBar: true,
+                                type: "error",
+                            });
                         }))}>
 
                         <input id='createLeague' {...register('leagueName', { required: true })} />
@@ -163,23 +163,23 @@ function LeaguesComponent() {
                         .then(res => {
                             actions.generalActions.setUser(res.data)
                             reset2();
-                            // toast('Succesfully Joined A League', {
-                            //     position: "top-right",
-                            //     autoClose: 2000,
-                            //     hideProgressBar: true,
-                            //     type: "success",
-                            //     theme: "light",
-                            // });
+                            toast('Succesfully Joined A League', {
+                                position: "top-right",
+                                autoClose: 2000,
+                                hideProgressBar: true,
+                                type: "success",
+                                theme: "light",
+                            });
                         })
                         .catch(err => {
                             console.log(err.response);
                             reset2();
-                            // toast('Unable To Join This League', {
-                            //     position: "top-right",
-                            //     autoClose: 2000,
-                            //     hideProgressBar: true,
-                            //     type: "error",
-                            // });
+                            toast('Unable To Join This League', {
+                                position: "top-right",
+                                autoClose: 2000,
+                                hideProgressBar: true,
+                                type: "error",
+                            });
                         }))}>
                         <input id='joinLeague' {...register2('leagueId', { required: true })} />
                         <input type="submit" />

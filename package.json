@@ -19,6 +19,7 @@
         "react-router-dom": "^5.2.0",
         "react-scripts": "5.0.0",
         "react-svg-line-chart": "^2.0.1",
+        "react-toastify": "8.2.0",
         "simple-flexbox": "^2.3.1"
     },
     "scripts": {
