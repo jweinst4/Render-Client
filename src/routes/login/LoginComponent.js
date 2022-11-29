@@ -17,7 +17,7 @@ function LoginComponent() {
         await apiServices.login(token, type)
             .then(res => {
                 actions.generalActions.setUser(res.data);
-                actions.generalActions.resetisbusy()
+
                 actions.generalActions.login()
             })
             .catch(err => console.log(err.response))
