@@ -2,14 +2,47 @@ import axios from 'axios';
 const url = process.env.REACT_APP_SERVER_URL
 
 export function login(token, type) {
+    // console.log('at api');
+    // console.log(token);
+    // console.log(type);
+    // return new Promise((resolve, reject) => {
+    //     const data =
+    //     {
+    //         "credential": token,
+    //         "type": type,
+    //     }
+    //     axios({
+    //         url: url + "api/auth/login",
+    //         method: "POST",
+    //         data: data,
+    //     })
+    //         .then(res => {
+    //             resolve(res)
+    //         })
+    //         .catch(err => {
+    //             console.log('error');
+    //             console.log(err)
+    //             reject(err)
+    //         })
+    // })
+}
+
+export function loginTest(token, type, sub, email) {
     return new Promise((resolve, reject) => {
-        const data =
+        let data =
         {
             "credential": token,
             "type": type,
         }
+        if (sub) {
+            data.sub = sub
+        }
+        if (email) {
+            data.email = email
+        }
+        console.log(data);
         axios({
-            url: url + "api/auth/login",
+            url: url + "api/auth/logintest",
             method: "POST",
             data: data,
         })
