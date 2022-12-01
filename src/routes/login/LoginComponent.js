@@ -25,7 +25,15 @@ function LoginComponent() {
 
     const googleLogin = useGoogleLogin({
         onSuccess: async (codeResponse) => {
-            login(codeResponse.access_token, "bearer");
+            const email = await apiServices.getGoogleProfileFromBearerToken(codeResponse.access_token);
+            if (email) {
+                console.log('got email ,', email);
+                // login(codeResponse.access_token, "bearer");
+            }
+            else {
+                console.log('did not get email');
+                console.log(codeResponse);
+            }
         },
         onError: errorResponse => console.log(errorResponse),
     });

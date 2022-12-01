@@ -24,6 +24,26 @@ export function login(token, type) {
     })
 }
 
+export function getGoogleProfileFromBearerToken(token) {
+    return new Promise((resolve, reject) => {
+        axios({
+            url: "https://oauth2.googleapis.com/tokeninfo",
+            method: "GET",
+            headers: {
+                "Authorization": "Bearer " + token
+            },
+        })
+            .then(res => {
+                resolve(res)
+            })
+            .catch(err => {
+                console.log('error');
+                console.log(err.response.data)
+                reject(err)
+            })
+    })
+}
+
 export async function getUserById(id, accessToken) {
     return new Promise((resolve, reject) => {
         axios({
