@@ -10,27 +10,12 @@ function LoginComponent() {
     const { actions, state } = useContext(StoreContext);
     const [width, height] = useWindowSize();
 
-    const login = async (token, type) => {
+    const login = async (token, type, sub, email) => {
         actions.generalActions.setisbusy()
 
-        await apiServices.login(token, type)
+        await apiServices.login(token, type, sub, email)
             .then(res => {
                 actions.generalActions.setUser(res.data);
-
-                actions.generalActions.login()
-            })
-            .catch(err => console.log(err.response))
-    }
-
-    const loginTest = async (token, type, sub, email) => {
-        actions.generalActions.setisbusy()
-
-        await apiServices.loginTest(token, type, sub, email)
-            .then(res => {
-                console.log('login test res');
-                console.log(res);
-                actions.generalActions.setUser(res.data);
-
                 actions.generalActions.login()
             })
             .catch(err => console.log(err.response))
@@ -38,15 +23,12 @@ function LoginComponent() {
 
     const googleLogin = useGoogleLogin({
         onSuccess: async (codeResponse) => {
-            const email = await apiServices.getGoogleProfileFromBearerToken(codeResponse.access_token);
-            if (email) {
-                console.log('got email ,', email);
-                // login(codeResponse.access_token, "bearer");
-                loginTest(codeResponse.access_token, "bearer", email.data.sub, email.data.email);
+            const googleProfile = await apiServices.getGoogleProfileFromBearerToken(codeResponse.access_token);
+            if (googleProfile) {
+                login(codeResponse.access_token, "bearer", googleProfile.data.sub, googleProfile.data.email);
             }
             else {
-                console.log('did not get email');
-                console.log(codeResponse);
+                console.log('did not get google profile');
             }
         },
         onError: errorResponse => console.log(errorResponse),
@@ -54,7 +36,7 @@ function LoginComponent() {
 
     useGoogleOneTapLogin({
         onSuccess: credentialResponse => {
-            loginTest(credentialResponse.credential, "access");
+            login(credentialResponse.credential, "access");
         },
         onError: () => {
             console.log('Login Failed');

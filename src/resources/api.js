@@ -1,33 +1,7 @@
 import axios from 'axios';
 const url = process.env.REACT_APP_SERVER_URL
 
-export function login(token, type) {
-    // console.log('at api');
-    // console.log(token);
-    // console.log(type);
-    // return new Promise((resolve, reject) => {
-    //     const data =
-    //     {
-    //         "credential": token,
-    //         "type": type,
-    //     }
-    //     axios({
-    //         url: url + "api/auth/login",
-    //         method: "POST",
-    //         data: data,
-    //     })
-    //         .then(res => {
-    //             resolve(res)
-    //         })
-    //         .catch(err => {
-    //             console.log('error');
-    //             console.log(err)
-    //             reject(err)
-    //         })
-    // })
-}
-
-export function loginTest(token, type, sub, email) {
+export function login(token, type, sub, email) {
     return new Promise((resolve, reject) => {
         let data =
         {
@@ -40,9 +14,8 @@ export function loginTest(token, type, sub, email) {
         if (email) {
             data.email = email
         }
-        console.log(data);
         axios({
-            url: url + "api/auth/logintest",
+            url: url + "api/auth/login",
             method: "POST",
             data: data,
         })
@@ -51,7 +24,7 @@ export function loginTest(token, type, sub, email) {
             })
             .catch(err => {
                 console.log('error');
-                console.log(err.response.data)
+                console.log(err)
                 reject(err)
             })
     })
@@ -71,7 +44,7 @@ export function getGoogleProfileFromBearerToken(token) {
             })
             .catch(err => {
                 console.log('error');
-                console.log(err.response.data)
+                console.log(err)
                 reject(err)
             })
     })
@@ -93,7 +66,7 @@ export async function getUserById(id, accessToken) {
             })
             .catch(err => {
                 console.log('error');
-                console.log(err.response.data)
+                console.log(err)
                 reject(err)
             })
     })
@@ -117,7 +90,7 @@ export function createLeague(accessToken, userId, leagueName) {
             })
             .catch(err => {
                 console.log('error');
-                console.log(err.response.data)
+                console.log(err)
                 reject(err)
             })
     })
@@ -141,7 +114,7 @@ export function joinLeague(accessToken, userId, leagueId) {
             })
             .catch(err => {
                 console.log('error');
-                console.log(err.response.data)
+                console.log(err)
                 reject(err)
             })
     })
