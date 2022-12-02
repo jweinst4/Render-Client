@@ -51,7 +51,7 @@ const useStyles = createUseStyles((theme) => ({
 function CardComponent(props) {
     const theme = useTheme();
     const classes = useStyles({ theme });
-    const { title, link, subtitle, subtitleTwo, items, containerStyles } = props;
+    const { title, link, subtitle, subtitleTwo, subtitleThree, subtitleFour, subtitleFive, items, containerStyles } = props;
     function renderItem(item, index) {
         return (
             <Column
@@ -61,6 +61,7 @@ function CardComponent(props) {
             >
                 {item}
             </Column>
+
         );
     }
 
@@ -73,14 +74,43 @@ function CardComponent(props) {
             <Row horizontal='space-between'>
                 <Column>
                     <span className={classes.title}>{title}</span>
-                    <Row style={{ marginTop: 8, marginBottom: 16 }}>
-                        <span className={classes.subtitle}>{subtitle}</span>
-                        {subtitleTwo && (
+                    {subtitle && (
+                        <Row style={{ marginTop: 8, marginBottom: 16 }}>
+                            <span className={[classes.subtitle, classes.subtitle2].join(' ')}>
+                                {subtitle}
+                            </span>
+                        </Row>
+                    )}
+                    {subtitleTwo && (
+                        <Row style={{ marginTop: 8, marginBottom: 16 }}>
+
                             <span className={[classes.subtitle, classes.subtitle2].join(' ')}>
                                 {subtitleTwo}
                             </span>
-                        )}
-                    </Row>
+
+                        </Row>
+                    )}
+                    {subtitleThree && (
+                        <Row style={{ marginTop: 8, marginBottom: 16 }}>
+                            <span className={[classes.subtitle, classes.subtitle2].join(' ')}>
+                                {subtitleThree}
+                            </span>
+                        </Row>
+                    )}
+                    {subtitleFour && (
+                        <Row style={{ marginTop: 8, marginBottom: 16 }}>
+                            <span className={[classes.subtitle, classes.subtitle2].join(' ')}>
+                                {subtitleFour}
+                            </span>
+                        </Row>
+                    )}
+                    {subtitleFive && (
+                        <Row style={{ marginTop: 8, marginBottom: 16 }}>
+                            <span className={[classes.subtitle, classes.subtitle2].join(' ')}>
+                                {subtitleFive}
+                            </span>
+                        </Row>
+                    )}
                 </Column>
                 <span className={classes.link}>{link}</span>
             </Row>

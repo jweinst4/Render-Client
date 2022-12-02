@@ -92,8 +92,9 @@ function LeaguesComponent() {
     }
 
     const renderLeagueDetails = (leagueId) => {
-        const leagueDesc = state.generalStates.user.leaguedetails.find(element => element.testings === leagueId)
-        const registrants = state.generalStates.user.leaguedetails.filter(detail => detail.testings === leagueId);
+        const leagueDesc = state.generalStates.user.leaguedetails.find(element => element.league_id === leagueId)
+        const registrants = state.generalStates.user.leaguedetails.filter(detail => detail.league_id === leagueId);
+
 
         if (leagueDesc && registrants) {
             return <CardComponent
@@ -101,9 +102,33 @@ function LeaguesComponent() {
                 link='View details'
                 subtitle={`Id: ${leagueId}`}
                 subtitleTwo={`Registrants: ${registrants.length}`}
+                subtitleThree={registrants[0].start_date ? `Start Date: ${registrants.start_date}` : 'Start Date: None Yet'}
+                subtitleFour={registrants[0].end_date ? `End Date: ${registrants.start_date}` : 'End Date: None Yet'}
+                subtitleFive={registrants[0].reveal_date ? `Reveal Date: ${new Date(Date.parse(registrants[0].reveal_date))}` : 'Reveal Date: None Yet'}
                 items={
                     registrants.map((registrant) => (
-                        <Row alignSelf='stretch' key={leagueId + registrant.email + Math.floor(Math.random() * 1000)} >{registrant.email} </Row>
+                        <Row>
+                            <Column flex={.5}>
+                                <span>{registrant.email ? registrant.email : "No Email"} </span>
+                            </Column>
+                            <Column flex={.5}>
+                                <span>
+                                    {registrant.email === state.generalStates.user.email ?
+                                        registrant.deck_name ?
+                                            <span style={{ backgroundColor: 'lightblue' }}>{registrant.deck_name}</span> :
+                                            <span style={{ backgroundColor: 'lightgreen' }}>Submit Your Deck</span>
+                                        :
+                                        !registrant.reveal_date ?
+                                            <span> Deck Reveal Awaiting Admin To Set Reveal Date</span>
+                                            : registrant.reveal_date < Date.now() ?
+                                                <span>Reveal Date Already</span>
+                                                :
+                                                <span>Reveal Date: {(Math.abs(new Date(Date.parse(registrant.reveal_date)) - Date.now()) / 36e5).toFixed(2)} hours</span>
+
+                                    }
+                                </span>
+                            </Column>
+                        </Row>
                     ))}
             >
             </CardComponent >
@@ -123,7 +148,7 @@ function LeaguesComponent() {
                     Create League - League Name:
                 </Row>
                 <Row style={{ flex: .7 }}>
-                    <form id='createLeagueForm' style={{ backgroundColor: 'yellow' }} onSubmit={handleSubmit(async (data) => await apiServices.createLeague(state.generalStates.user.accessToken, state.generalStates.user.id, data.leagueName)
+                    <form id='createLeagueForm' onSubmit={handleSubmit(async (data) => await apiServices.createLeague(state.generalStates.user.accessToken, state.generalStates.user.id, data.leagueName)
                         .then(res => {
                             actions.generalActions.setUser(res.data)
                             reset();
@@ -163,7 +188,7 @@ function LeaguesComponent() {
                     <form id='joinLeagueForm' onSubmit={handleSubmit2(async (data) => {
                         var regex = /^[0-9]+$/;
                         if (!data.leagueId.match(regex)) {
-                            toast('Please Type A Valid League Id', {
+                            toast('Please Enter A Valid League Id', {
                                 position: "top-right",
                                 autoClose: 2000,
                                 hideProgressBar: true,
