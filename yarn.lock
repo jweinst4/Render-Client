@@ -1553,6 +1553,11 @@
     schema-utils "^3.0.0"
     source-map "^0.7.3"
 
+"@rcaferati/wac@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@rcaferati/wac/-/wac-1.0.0.tgz#7505671559d576dd8c1f7c9a3b0cfea1fa6cd554"
+  integrity sha512-7dVbzvcfL9o4UnrCaNeoIs7Ri9Ol+OMfpYYCJJV1dfm+5+pVM6DrvFjPzqifd2ACVABpXmwTQKy9KFxNm/7IdA==
+
 "@react-oauth/google@^0.4.0":
   version "0.4.0"
   resolved "https://registry.yarnpkg.com/@react-oauth/google/-/google-0.4.0.tgz#ae4fe2724040bd11facdc53aad43a21e9f34b2c9"
@@ -7606,6 +7611,13 @@ react-app-polyfill@^3.0.0:
     regenerator-runtime "^0.13.9"
     whatwg-fetch "^3.6.2"
 
+react-awesome-button@^7.0.4:
+  version "7.0.4"
+  resolved "https://registry.yarnpkg.com/react-awesome-button/-/react-awesome-button-7.0.4.tgz#6603e2d89e05f43e5defb16412a9f130aecb082f"
+  integrity sha512-kwLoIgliYxvyxkb0zCZKC0qvDpazczcyWNA854YhNcs/9BYMPXrk1o0hyBKM11yhIBgUiEES7Bihj2s9LClV2Q==
+  dependencies:
+    "@rcaferati/wac" "^1.0.0"
+
 react-axios@^2.0.6:
   version "2.0.6"
   resolved "https://registry.yarnpkg.com/react-axios/-/react-axios-2.0.6.tgz#a85ac4a92a7eda5ceb9d6102c43db1676b9ed3fe"
@@ -7689,6 +7701,11 @@ react-hook-form@7.39.5:
   version "7.39.5"
   resolved "https://registry.yarnpkg.com/react-hook-form/-/react-hook-form-7.39.5.tgz#a4272b60288ef5e1bb42bbb6ba3b36d243ab2879"
   integrity sha512-OE0HKyz5IPc6svN2wd+e+evidZrw4O4WZWAWYzQVZuHi+hYnHFSLnxOq0ddjbdmaLIsLHut/ab7j72y2QT3+KA==
+
+react-icons@^4.7.1:
+  version "4.7.1"
+  resolved "https://registry.yarnpkg.com/react-icons/-/react-icons-4.7.1.tgz#0f4b25a5694e6972677cb189d2a72eabea7a8345"
+  integrity sha512-yHd3oKGMgm7zxo3EA7H2n7vxSoiGmHk5t6Ou4bXsfcgWyhfDKMpyKfhHR6Bjnn63c+YXBLBPUql9H4wPJM6sXw==
 
 react-is@^16.13.1, react-is@^16.6.0, react-is@^16.7.0:
   version "16.13.1"

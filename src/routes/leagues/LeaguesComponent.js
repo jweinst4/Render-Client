@@ -8,9 +8,12 @@ import * as apiServices from '../../resources/api';
 import { ToastContainer, toast } from 'react-toastify';
 import { useForm } from 'react-hook-form';
 import 'react-toastify/dist/ReactToastify.css';
-
+import { AwesomeButton } from 'react-awesome-button';
+import 'react-awesome-button/dist/styles.css';
+import { FaLock } from "react-icons/fa";
 
 const useStyles = createUseStyles({
+
     cardsContainer: {
         marginRight: -30,
         marginTop: -30
@@ -107,26 +110,49 @@ function LeaguesComponent() {
                 subtitleFive={registrants[0].reveal_date ? `Reveal Date: ${new Date(Date.parse(registrants[0].reveal_date))}` : 'Reveal Date: None Yet'}
                 items={
                     registrants.map((registrant) => (
-                        <Row>
+                        <Row vertical='center'>
                             <Column flex={.5}>
                                 <span>{registrant.email ? registrant.email : "No Email"} </span>
+
                             </Column>
                             <Column flex={.5}>
-                                <span>
+                                <Row vertical='center'>
                                     {registrant.email === state.generalStates.user.email ?
                                         registrant.deck_name ?
-                                            <span style={{ backgroundColor: 'lightblue' }}>{registrant.deck_name}</span> :
-                                            <span style={{ backgroundColor: 'lightgreen' }}>Submit Your Deck</span>
+                                            <span><AwesomeButton type="primary" size="large">{registrant.deck_name}</AwesomeButton></span> :
+                                            <span><AwesomeButton type="primary" size="large">Submit Your Deck</AwesomeButton></span>
                                         :
                                         !registrant.reveal_date ?
-                                            <span> Deck Reveal Awaiting Admin To Set Reveal Date</span>
+                                            <span><AwesomeButton type="secondary" size="large"
+                                                onPress={() =>
+                                                    toast('Awaiting Admin To Set Deck Reveal Date', {
+                                                        position: "top-right",
+                                                        autoClose: 2000,
+                                                        hideProgressBar: true,
+                                                        type: "warning",
+                                                        theme: "light",
+                                                    })
+                                                }
+
+                                            ><FaLock /></AwesomeButton></span>
                                             : registrant.reveal_date < Date.now() ?
-                                                <span>Reveal Date Already</span>
+                                                <span>Deck Reveal Date Already - Show Lists</span>
                                                 :
-                                                <span>Reveal Date: {(Math.abs(new Date(Date.parse(registrant.reveal_date)) - Date.now()) / 36e5).toFixed(2)} hours</span>
+                                                <span><AwesomeButton type="secondary" size="large"
+                                                    onPress={() =>
+                                                        toast('Awaiting Deck Reveal Date', {
+                                                            position: "top-right",
+                                                            autoClose: 2000,
+                                                            hideProgressBar: true,
+                                                            type: "warning",
+                                                            theme: "light",
+                                                        })
+                                                    }
+
+                                                ><FaLock /></AwesomeButton></span>
 
                                     }
-                                </span>
+                                </Row>
                             </Column>
                         </Row>
                     ))}
@@ -170,9 +196,8 @@ function LeaguesComponent() {
                                 type: "error",
                             });
                         }))}>
-
                         <input id='createLeague' {...register('leagueName', { required: true })} />
-                        <input type="submit" />
+                        <AwesomeButton size="large" type="secondary">Create League</AwesomeButton>
                     </form>
 
                 </Row>
@@ -185,43 +210,44 @@ function LeaguesComponent() {
                     Join League - League Id:
                 </Row>
                 <Row style={{ flex: .7 }}>
-                    <form id='joinLeagueForm' onSubmit={handleSubmit2(async (data) => {
-                        var regex = /^[0-9]+$/;
-                        if (!data.leagueId.match(regex)) {
-                            toast('Please Enter A Valid League Id', {
-                                position: "top-right",
-                                autoClose: 2000,
-                                hideProgressBar: true,
-                                type: "warning",
-                                theme: "light",
-                            });
-                            reset2();
-                            return;
-                        }
-                        await apiServices.joinLeague(state.generalStates.user.accessToken, state.generalStates.user.id, data.leagueId)
-                            .then(res => {
-                                actions.generalActions.setUser(res.data)
-                                reset2();
-                                toast('Succesfully Joined A League', {
+                    <form id='joinLeagueForm' onSubmit={
+                        handleSubmit2(async (data) => {
+                            var regex = /^[0-9]+$/;
+                            if (!data.leagueId.match(regex)) {
+                                toast('Please Enter A Valid League Id', {
                                     position: "top-right",
                                     autoClose: 2000,
                                     hideProgressBar: true,
-                                    type: "success",
+                                    type: "warning",
                                     theme: "light",
                                 });
-                            })
-                            .catch(err => {
                                 reset2();
-                                toast(err.response.data.message, {
-                                    position: "top-right",
-                                    autoClose: 2000,
-                                    hideProgressBar: true,
-                                    type: "error",
-                                });
-                            })
-                    })}>
+                                return;
+                            }
+                            await apiServices.joinLeague(state.generalStates.user.accessToken, state.generalStates.user.id, data.leagueId)
+                                .then(res => {
+                                    actions.generalActions.setUser(res.data)
+                                    reset2();
+                                    toast('Succesfully Joined A League', {
+                                        position: "top-right",
+                                        autoClose: 2000,
+                                        hideProgressBar: true,
+                                        type: "success",
+                                        theme: "light",
+                                    });
+                                })
+                                .catch(err => {
+                                    reset2();
+                                    toast(err.response.data.message, {
+                                        position: "top-right",
+                                        autoClose: 2000,
+                                        hideProgressBar: true,
+                                        type: "error",
+                                    });
+                                })
+                        })}>
                         <input id='joinLeague' {...register2('leagueId', { required: true })} />
-                        <input type="submit" />
+                        <AwesomeButton size="large" type="secondary">Join League</AwesomeButton>
                     </form>
 
                 </Row>
