@@ -11,6 +11,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { AwesomeButton } from 'react-awesome-button';
 import 'react-awesome-button/dist/styles.css';
 import { FaLock } from "react-icons/fa";
+import { FaToolbox } from "react-icons/fa";
 
 const useStyles = createUseStyles({
 
@@ -94,82 +95,92 @@ function LeaguesComponent() {
         return <LoadingComponent loading />
     }
 
-    const renderLeagueDetails = (leagueId) => {
-        const leagueDesc = state.generalStates.user.leaguedetails.find(element => element.league_id === leagueId)
-        const registrants = state.generalStates.user.leaguedetails.filter(detail => detail.league_id === leagueId);
-
-
-        if (leagueDesc && registrants) {
-            return <CardComponent
-                title={leagueDesc.name}
-                link='View details'
-                subtitle={`Id: ${leagueId}`}
-                subtitleTwo={`Registrants: ${registrants.length}`}
-                subtitleThree={registrants[0].start_date ? `Start Date: ${registrants.start_date}` : 'Start Date: None Yet'}
-                subtitleFour={registrants[0].end_date ? `End Date: ${registrants.start_date}` : 'End Date: None Yet'}
-                subtitleFive={registrants[0].reveal_date ? `Reveal Date: ${new Date(Date.parse(registrants[0].reveal_date))}` : 'Reveal Date: None Yet'}
-                items={
-                    registrants.map((registrant) => (
-                        <Row vertical='center'>
-                            <Column flex={.5}>
-                                <span>{registrant.email ? registrant.email : "No Email"} </span>
-
-                            </Column>
-                            <Column flex={.5}>
-                                <Row vertical='center'>
-                                    {registrant.email === state.generalStates.user.email ?
-                                        registrant.deck_name ?
-                                            <span><AwesomeButton type="primary" size="large">{registrant.deck_name}</AwesomeButton></span> :
-                                            <span><AwesomeButton type="primary" size="large">Submit Your Deck</AwesomeButton></span>
-                                        :
-                                        !registrant.reveal_date ?
-                                            <span><AwesomeButton type="secondary" size="large"
-                                                onPress={() =>
-                                                    toast('Awaiting Admin To Set Deck Reveal Date', {
-                                                        position: "top-right",
-                                                        autoClose: 2000,
-                                                        hideProgressBar: true,
-                                                        type: "warning",
-                                                        theme: "light",
-                                                    })
-                                                }
-
-                                            ><FaLock /></AwesomeButton></span>
-                                            : registrant.reveal_date < Date.now() ?
-                                                <span>Deck Reveal Date Already - Show Lists</span>
-                                                :
-                                                <span><AwesomeButton type="secondary" size="large"
-                                                    onPress={() =>
-                                                        toast('Awaiting Deck Reveal Date', {
-                                                            position: "top-right",
-                                                            autoClose: 2000,
-                                                            hideProgressBar: true,
-                                                            type: "warning",
-                                                            theme: "light",
-                                                        })
-                                                    }
-
-                                                ><FaLock /></AwesomeButton></span>
-
-                                    }
-                                </Row>
-                            </Column>
-                        </Row>
-                    ))}
-            >
-            </CardComponent >
-        }
-        else {
-            return null
-        }
+    const displayToast = (message, type) => {
+        toast(message, {
+            position: "top-right",
+            autoClose: 2000,
+            hideProgressBar: true,
+            type: type,
+            theme: "light",
+        });
     }
 
-    return (
-        <Column>
-            <ToastContainer />
-            <Row
-                breakpoints={{ 384: 'column' }}
-            >
+    const renderLeagues = () => {
+        return state.generalStates.user.leagues.map(league => {
+            return (
+                <Row alignSelf='stretch'>
+                    <Column flexGrow={1}>
+                        <Row className={classes.cardRow} breakpoints={{ 384: "column" }} >
+                            <CardComponent
+                                title={league.name}
+                                link='View details'
+                                subtitle={`Id: ${league.id}`}
+                                subtitleTwo={`Registrants: ${league.registrants.length}`}
+                                subtitleThree={league.start_date ? `Start Date: ${league.start_date}` : 'Start Date: None Yet'}
+                                subtitleFour={league.end_date ? `End Date: ${league.end_date}` : 'End Date: None Yet'}
+                                subtitleFive={league.deck_reveal_date ? `Deck Reveal Date: ${new Date(Date.parse(league.deck_reveal_date))}` : 'Deck Reveal Date: None Yet'}
+                                items={
+                                    league.registrants.map((registrant) => (
+                                        <Row vertical='center'>
+                                            <Column flex={.49}>
+                                                <span>{registrant.email ? registrant.email : "No Email"} </span>
+                                            </Column>
+                                            <Column flex={.02}>
+                                                {registrant.user_id === league.admin_id ? <FaToolbox /> : null}
+                                            </Column>
+                                            <Column flex={.49}>
+                                                <Row vertical='center'>
+                                                    {registrant.email === state.generalStates.user.email ?
+                                                        registrant.deck_name ?
+                                                            <span>
+                                                                <AwesomeButton type="primary" size="large">{registrant.deck_name}
+                                                                </AwesomeButton>
+                                                            </span> :
+                                                            <span>
+                                                                <AwesomeButton type="primary" size="large">
+                                                                    Submit Your Deck
+                                                                </AwesomeButton>
+                                                            </span>
+                                                        :
+                                                        !registrant.deck_reveal_date ?
+                                                            <span>
+                                                                <AwesomeButton type="secondary" size="large"
+                                                                    onPress={() =>
+                                                                        displayToast('Awaiting Admin To Set Deck Reveal Date', 'warning')
+                                                                    }
+                                                                >
+                                                                    <FaLock />
+                                                                </AwesomeButton>
+                                                            </span>
+                                                            : registrant.deck_reveal_date < Date.now() ?
+                                                                <span>
+                                                                    Deck Reveal Date Already - Show Lists
+                                                                </span>
+                                                                :
+                                                                <span>
+                                                                    <AwesomeButton type="secondary" size="large"
+                                                                        onPress={() =>
+                                                                            displayToast('Awaiting Deck Reveal Date', 'warning')
+                                                                        }
+                                                                    >
+                                                                        <FaLock />
+                                                                    </AwesomeButton>
+                                                                </span>
+                                                    }
+                                                </Row>
+                                            </Column>
+                                        </Row>
+                                    ))}>
+                            </CardComponent >
+                        </Row>
+                    </Column>
+                </Row>)
+        })
+    }
+
+    const renderCreateLeague = () => {
+        return (
+            <Row breakpoints={{ 384: 'column' }}>
                 <Row style={{ flex: .3 }}>
                     Create League - League Name:
                 </Row>
@@ -178,34 +189,26 @@ function LeaguesComponent() {
                         .then(res => {
                             actions.generalActions.setUser(res.data)
                             reset();
-                            toast('Succesfully Created A League', {
-                                position: "top-right",
-                                autoClose: 2000,
-                                hideProgressBar: true,
-                                type: "success",
-                                theme: "light",
-                            });
+                            displayToast('Successfully Created A League', 'success')
                         })
                         .catch(err => {
                             console.log(err.response)
                             reset();
-                            toast(err.response.data.message, {
-                                position: "top-right",
-                                autoClose: 2000,
-                                hideProgressBar: true,
-                                type: "error",
-                            });
+                            displayToast(err.response.data.message, 'error')
                         }))}>
                         <input id='createLeague' {...register('leagueName', { required: true })} />
-                        <AwesomeButton size="large" type="secondary">Create League</AwesomeButton>
+                        <AwesomeButton size="large" type="secondary">
+                            Create League
+                        </AwesomeButton>
                     </form>
-
                 </Row>
             </Row>
-            <br />
-            <Row
-                breakpoints={{ 384: 'column' }}
-            >
+        )
+    }
+
+    const renderJoinLeague = () => {
+        return (
+            <Row breakpoints={{ 384: 'column' }}>
                 <Row style={{ flex: .3 }}>
                     Join League - League Id:
                 </Row>
@@ -214,13 +217,7 @@ function LeaguesComponent() {
                         handleSubmit2(async (data) => {
                             var regex = /^[0-9]+$/;
                             if (!data.leagueId.match(regex)) {
-                                toast('Please Enter A Valid League Id', {
-                                    position: "top-right",
-                                    autoClose: 2000,
-                                    hideProgressBar: true,
-                                    type: "warning",
-                                    theme: "light",
-                                });
+                                displayToast('Please Enter A Valid League Id', 'warning')
                                 reset2();
                                 return;
                             }
@@ -228,53 +225,36 @@ function LeaguesComponent() {
                                 .then(res => {
                                     actions.generalActions.setUser(res.data)
                                     reset2();
-                                    toast('Succesfully Joined A League', {
-                                        position: "top-right",
-                                        autoClose: 2000,
-                                        hideProgressBar: true,
-                                        type: "success",
-                                        theme: "light",
-                                    });
+                                    displayToast('Succesfully Joined A League', 'success')
                                 })
                                 .catch(err => {
                                     reset2();
-                                    toast(err.response.data.message, {
-                                        position: "top-right",
-                                        autoClose: 2000,
-                                        hideProgressBar: true,
-                                        type: "error",
-                                    });
+                                    displayToast(err.response.data.message, 'error')
                                 })
                         })}>
                         <input id='joinLeague' {...register2('leagueId', { required: true })} />
-                        <AwesomeButton size="large" type="secondary">Join League</AwesomeButton>
+                        <AwesomeButton size="large" type="secondary">
+                            Join League
+                        </AwesomeButton>
                     </form>
-
                 </Row>
             </Row>
+        )
+    }
 
+    return (
+        <Column>
+            <ToastContainer />
+            {renderCreateLeague()}
+            <br />
+            {renderJoinLeague()}
             <Row
                 className={classes.cardRow}
                 breakpoints={{ 384: 'column' }}
             >
-                League Count: {state.generalStates.user.league_.length}
+                League Count: {state.generalStates.user.leagues.length}
             </Row>
-            {state.generalStates.user.league_ && state.generalStates.user.league_.map ? state.generalStates.user.league_.map((league) => (
-                <Row alignSelf='stretch' key={Math.floor(Math.random() * 1000)}>
-                    <Column flexGrow={1}>
-                        <Row
-                            className={classes.cardRow}
-                            breakpoints={{ 384: 'column' }}
-                        >
-                            {renderLeagueDetails(league)}
-                        </Row>
-                    </Column>
-                </Row>)) : <Row
-                    className={classes.cardRow}
-                    breakpoints={{ 384: 'column' }}
-                >
-                No Leagues
-            </Row>}
+            {renderLeagues()}
         </Column>
     );
 }
