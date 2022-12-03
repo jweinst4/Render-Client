@@ -151,7 +151,7 @@ function LeaguesComponent() {
                                         <span>
                                             <AwesomeButton type="primary" size="large"
                                                 onPress={() =>
-                                                    displayToast('Submit Deck Will Be Implemented Soon')
+                                                    displayToast('Submit Deck Will Be Implemented Soon', 'warning')
                                                 }>
                                                 Submit Your Deck
                                             </AwesomeButton>
