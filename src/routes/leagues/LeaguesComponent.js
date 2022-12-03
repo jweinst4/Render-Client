@@ -11,7 +11,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { AwesomeButton } from 'react-awesome-button';
 import 'react-awesome-button/dist/styles.css';
 import { FaLock } from "react-icons/fa";
-import { FaToolbox } from "react-icons/fa";
+import { GrUserAdmin } from "react-icons/gr";
 
 const useStyles = createUseStyles({
 
@@ -126,7 +126,7 @@ function LeaguesComponent() {
                                                 <span>{registrant.email ? registrant.email : "No Email"} </span>
                                             </Column>
                                             <Column flex={.02}>
-                                                {registrant.user_id === league.admin_id ? <FaToolbox /> : null}
+                                                {registrant.user_id === league.admin_id ? <GrUserAdmin /> : null}
                                             </Column>
                                             <Column flex={.49}>
                                                 <Row vertical='center'>
