@@ -105,6 +105,100 @@ function LeaguesComponent() {
         });
     }
 
+    const isDeckRevealDateInPast = (deckRevealDate) => {
+        return (new Date(Date.parse(deckRevealDate)) < new Date(Date.now()))
+    }
+
+    const formatDate = (date) => {
+        let dateObj = new Date();
+        const month = dateObj.getUTCMonth(date) + 1;
+        const day = dateObj.getUTCDate(date);
+        const year = dateObj.getUTCFullYear(date);
+
+        const newDate = month + "/" + day + "/" + year;
+        return newDate;
+    }
+
+    const renderRegistrantDetails = (registrant, leagueAdminId, shouldDisplayDecks) => {
+        const isUser = registrant.email === state.generalStates.user.email;
+
+        return (
+            <Row vertical='center'>
+                <Column flex={.49}>
+                    <span>{registrant.email ? registrant.email : "No Email"} </span>
+                </Column>
+                <Column flex={.02}>
+                    {registrant.user_id === leagueAdminId ? <GrUserAdmin /> : null}
+                </Column>
+                <Column flex={.49}>
+                    <Row vertical='center'>
+                        {
+                            shouldDisplayDecks ? registrant.deck_name ?
+                                <span>
+                                    <AwesomeButton type={isUser ? "primary" : "secondary"} size="large"
+                                        onPress={(event) => {
+                                            event.preventDefault()
+                                            window.open(registrant.url, "_blank")
+                                        }}
+                                    >{registrant.deck_name}
+                                    </AwesomeButton>
+                                </span>
+                                :
+                                <span>
+                                    <AwesomeButton type={isUser ? "primary" : "secondary"} size="large">
+                                        No Deck Name
+                                    </AwesomeButton>
+                                </span>
+                                :
+                                isUser ?
+                                    registrant.deck_name ?
+                                        <span>
+                                            <AwesomeButton type="primary" size="large"
+                                                onPress={(event) => {
+                                                    event.preventDefault()
+                                                    window.open(registrant.url, "_blank")
+                                                }}>
+                                                {registrant.deck_name}
+                                            </AwesomeButton>
+                                        </span>
+                                        :
+                                        <span>
+                                            <AwesomeButton type="primary" size="large">
+                                                Submit Your Deck
+                                            </AwesomeButton>
+                                        </span>
+                                    : registrant.deck_id ?
+                                        <Row vertical='center'>
+                                            <AwesomeButton type="secondary" size="large"
+                                                onPress={() =>
+                                                    displayToast('Awaiting Admin To Set Deck Reveal Date', 'warning')
+                                                }
+                                            >
+                                                <Row vertical='center' flex={1}><FaLock />
+                                                    Deck Submitted
+                                                </Row>
+                                            </AwesomeButton>
+                                        </Row>
+                                        :
+                                        <Row vertical='center'>
+                                            <AwesomeButton type="secondary" size="large"
+                                                onPress={() =>
+                                                    displayToast('Awaiting Admin To Set Deck Reveal Date', 'warning')
+                                                }
+                                            >
+                                                <Row vertical='center' flex={1}>
+                                                    <FaLock />
+                                                    Awaiting Deck
+                                                </Row>
+                                            </AwesomeButton>
+                                        </Row>
+                        }
+                    </Row>
+                </Column>
+            </Row>
+        )
+    }
+
     const renderLeagues = () => {
         return state.generalStates.user.leagues.map(league => {
             return (
@@ -118,58 +212,10 @@ function LeaguesComponent() {
                                 subtitleTwo={`Registrants: ${league.registrants.length}`}
                                 subtitleThree={league.start_date ? `Start Date: ${league.start_date}` : 'Start Date: None Yet'}
                                 subtitleFour={league.end_date ? `End Date: ${league.end_date}` : 'End Date: None Yet'}
-                                subtitleFive={league.deck_reveal_date ? `Deck Reveal Date: ${new Date(Date.parse(league.deck_reveal_date))}` : 'Deck Reveal Date: None Yet'}
+                                subtitleFive={league.deck_reveal_date ? `Deck Reveal Date: ${formatDate(league.deck_reveal_date)}` : 'Deck Reveal Date: None Yet'}
                                 items={
                                     league.registrants.map((registrant) => (
-                                        <Row vertical='center'>
-                                            <Column flex={.49}>
-                                                <span>{registrant.email ? registrant.email : "No Email"} </span>
-                                            </Column>
-                                            <Column flex={.02}>
-                                                {registrant.user_id === league.admin_id ? <GrUserAdmin /> : null}
-                                            </Column>
-                                            <Column flex={.49}>
-                                                <Row vertical='center'>
-                                                    {registrant.email === state.generalStates.user.email ?
-                                                        registrant.deck_name ?
-                                                            <span>
-                                                                <AwesomeButton type="primary" size="large">{registrant.deck_name}
-                                                                </AwesomeButton>
-                                                            </span> :
-                                                            <span>
-                                                                <AwesomeButton type="primary" size="large">
-                                                                    Submit Your Deck
-                                                                </AwesomeButton>
-                                                            </span>
-                                                        :
-                                                        !registrant.deck_reveal_date ?
-                                                            <span>
-                                                                <AwesomeButton type="secondary" size="large"
-                                                                    onPress={() =>
-                                                                        displayToast('Awaiting Admin To Set Deck Reveal Date', 'warning')
-                                                                    }
-                                                                >
-                                                                    <FaLock />
-                                                                </AwesomeButton>
-                                                            </span>
-                                                            : registrant.deck_reveal_date < Date.now() ?
-                                                                <span>
-                                                                    Deck Reveal Date Already - Show Lists
-                                                                </span>
-                                                                :
-                                                                <span>
-                                                                    <AwesomeButton type="secondary" size="large"
-                                                                        onPress={() =>
-                                                                            displayToast('Awaiting Deck Reveal Date', 'warning')
-                                                                        }
-                                                                    >
-                                                                        <FaLock />
-                                                                    </AwesomeButton>
-                                                                </span>
-                                                    }
-                                                </Row>
-                                            </Column>
-                                        </Row>
+                                        renderRegistrantDetails(registrant, league.admin_id, isDeckRevealDateInPast(league.deck_reveal_date))
                                     ))}>
                             </CardComponent >
                         </Row>
