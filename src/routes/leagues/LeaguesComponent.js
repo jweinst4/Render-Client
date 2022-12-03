@@ -124,7 +124,7 @@ function LeaguesComponent() {
                                     <AwesomeButton type={isUser ? "primary" : "secondary"} size="large"
                                         onPress={(event) => {
                                             event.preventDefault()
-                                            window.open(registrant.url, "_blank")
+                                            window.open(registrant.deck_url, "_blank")
                                         }}
                                     >{registrant.deck_name}
                                     </AwesomeButton>
@@ -142,7 +142,7 @@ function LeaguesComponent() {
                                             <AwesomeButton type="primary" size="large"
                                                 onPress={(event) => {
                                                     event.preventDefault()
-                                                    window.open(registrant.url, "_blank")
+                                                    window.open(registrant.deck_url, "_blank")
                                                 }}>
                                                 {registrant.deck_name}
                                             </AwesomeButton>
@@ -174,7 +174,7 @@ function LeaguesComponent() {
                                             >
                                                 <Row vertical='center' flex={1}>
                                                     <FaLock />
-                                                    Awaiting Deck
+                                                    Awaiting Submission
                                                 </Row>
                                             </AwesomeButton>
                                         </Row>
