@@ -149,7 +149,10 @@ function LeaguesComponent() {
                                         </span>
                                         :
                                         <span>
-                                            <AwesomeButton type="primary" size="large">
+                                            <AwesomeButton type="primary" size="large"
+                                                onPress={() =>
+                                                    displayToast('Submit Deck Will Be Implemented Soon')
+                                                }>
                                                 Submit Your Deck
                                             </AwesomeButton>
                                         </span>
@@ -196,7 +199,7 @@ function LeaguesComponent() {
                                 link='View details'
                                 subtitle={`Id: ${league.id}`}
                                 subtitleTwo={`Registrants: ${league.registrants.length}`}
-                                subtitleThree={league.start_date ? `Start Date: ${league.start_date}` : 'Start Date: None Set'}
+                                subtitleThree={league.start_date ? `Start Date: ${league.start_date}` : 'Start Date: Not Set'}
                                 subtitleFour={league.end_date ? `End Date: ${league.end_date}` : 'End Date: Not Set'}
                                 subtitleFive={league.deck_reveal_date ? `Deck Reveal Date: ${league.deck_reveal_date}` : 'Deck Reveal Date: Not Set'}
                                 items={
