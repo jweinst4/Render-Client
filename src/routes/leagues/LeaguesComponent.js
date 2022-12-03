@@ -105,20 +105,6 @@ function LeaguesComponent() {
         });
     }
 
-    const isDeckRevealDateInPast = (deckRevealDate) => {
-        return (new Date(Date.parse(deckRevealDate)) < new Date(Date.now()))
-    }
-
-    const formatDate = (date) => {
-        let dateObj = new Date();
-        const month = dateObj.getUTCMonth(date) + 1;
-        const day = dateObj.getUTCDate(date);
-        const year = dateObj.getUTCFullYear(date);
-
-        const newDate = month + "/" + day + "/" + year;
-        return newDate;
-    }
-
     const renderRegistrantDetails = (registrant, leagueAdminId, shouldDisplayDecks) => {
         const isUser = registrant.email === state.generalStates.user.email;
 
@@ -210,12 +196,12 @@ function LeaguesComponent() {
                                 link='View details'
                                 subtitle={`Id: ${league.id}`}
                                 subtitleTwo={`Registrants: ${league.registrants.length}`}
-                                subtitleThree={league.start_date ? `Start Date: ${league.start_date}` : 'Start Date: None Yet'}
-                                subtitleFour={league.end_date ? `End Date: ${league.end_date}` : 'End Date: None Yet'}
-                                subtitleFive={league.deck_reveal_date ? `Deck Reveal Date: ${formatDate(league.deck_reveal_date)}` : 'Deck Reveal Date: None Yet'}
+                                subtitleThree={league.start_date ? `Start Date: ${league.start_date}` : 'Start Date: None Set'}
+                                subtitleFour={league.end_date ? `End Date: ${league.end_date}` : 'End Date: Not Set'}
+                                subtitleFive={league.deck_reveal_date ? `Deck Reveal Date: ${league.deck_reveal_date}` : 'Deck Reveal Date: Not Set'}
                                 items={
                                     league.registrants.map((registrant) => (
-                                        renderRegistrantDetails(registrant, league.admin_id, isDeckRevealDateInPast(league.deck_reveal_date))
+                                        renderRegistrantDetails(registrant, league.admin_id, league.shouldDisplayDecks)
                                     ))}>
                             </CardComponent >
                         </Row>
