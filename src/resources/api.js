@@ -14,12 +14,15 @@ export function login(token, type, sub, email) {
         if (email) {
             data.email = email
         }
+        console.log('at login api');
         axios({
             url: url + "api/auth/login",
             method: "POST",
             data: data,
         })
             .then(res => {
+                console.log('resolve res');
+                console.log(res);
                 resolve(res)
             })
             .catch(err => {
