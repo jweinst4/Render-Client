@@ -12,6 +12,11 @@ function LoginComponent() {
 
     const login = async (token, type, sub, email) => {
         actions.generalActions.setisbusy()
+        console.log('at login');
+        console.log(token);
+        console.log(type);
+        console.log(sub);
+        console.log(email);
 
         await apiServices.login(token, type, sub, email)
             .then(res => {
