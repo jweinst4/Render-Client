@@ -114,7 +114,7 @@ function CardComponent(props) {
                 </Column>
                 <span className={classes.link}>{link}</span>
             </Row>
-            {items.map(renderItem)}
+            {items && items.map ? items.map(renderItem) : null}
         </Column>
     );
 }

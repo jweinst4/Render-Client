@@ -17,5 +17,6 @@ export default {
     login: '/login',
     signup: '/signup',
     forgotPassword: '/forgot_password',
-    leagues: '/leagues'
+    leagues: '/leagues',
+    decks: '/decks'
 };

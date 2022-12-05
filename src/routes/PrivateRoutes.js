@@ -5,12 +5,14 @@ import LoadingComponent from 'components/loading';
 
 const DashboardComponent = lazy(() => import('./dashboard'));
 const LeaguesComponent = lazy(() => import('./leagues'));
+const DecksComponent = lazy(() => import('./decks'));
 
 function PrivateRoutes() {
     return (
         <Suspense fallback={<LoadingComponent loading />}>
             <Switch>
                 <Route exact path={SLUGS.leagues} component={LeaguesComponent} />
+                <Route exact path={SLUGS.decks} component={DecksComponent} />
                 <Route exact path={SLUGS.dashboard} component={DashboardComponent} />
                 <Route exact path={SLUGS.overviewTwo} render={() => <div>overviewTwo</div>} />
                 <Route exact path={SLUGS.overviewThree} render={() => <div>overviewThree</div>} />

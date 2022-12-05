@@ -119,3 +119,54 @@ export function joinLeague(accessToken, userId, leagueId) {
             })
     })
 }
+
+export function submitDeck(accessToken, userId, deckName, deckUrl, deckPrice) {
+    return new Promise((resolve, reject) => {
+        axios({
+            url: url + "api/user/submitdeck",
+            method: "POST",
+            headers: {
+                "x-access-token": accessToken
+            },
+            data: {
+                "userId": userId,
+                "deckName": deckName,
+                "deckUrl": deckUrl,
+                "deckPrice": deckPrice
+            }
+        })
+            .then(res => {
+                resolve(res)
+            })
+            .catch(err => {
+                console.log('error');
+                console.log(err)
+                reject(err)
+            })
+    })
+}
+
+export function registerLeagueDeck(accessToken, userId, deckDetails) {
+    console.log('register league deck');
+    return new Promise((resolve, reject) => {
+        axios({
+            url: url + "api/user/registerleaguedeck",
+            method: "POST",
+            headers: {
+                "x-access-token": accessToken
+            },
+            data: {
+                "userId": userId,
+                "deckDetails": deckDetails
+            }
+        })
+            .then(res => {
+                resolve(res)
+            })
+            .catch(err => {
+                console.log('error');
+                console.log(err)
+                reject(err)
+            })
+    })
+}

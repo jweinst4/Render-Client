@@ -12,6 +12,11 @@ import { AwesomeButton } from 'react-awesome-button';
 import 'react-awesome-button/dist/styles.css';
 import { FaLock } from "react-icons/fa";
 import { GrUserAdmin } from "react-icons/gr";
+import Dropdown from 'react-dropdown';
+import 'react-dropdown/style.css';
+import { confirmAlert } from 'react-confirm-alert';
+import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
+
 
 const useStyles = createUseStyles({
 
@@ -57,6 +62,7 @@ const useStyles = createUseStyles({
 function LeaguesComponent() {
     const classes = useStyles();
     const { actions, state } = useContext(StoreContext);
+
     const {
         register,
         formState: { errors },
@@ -105,7 +111,37 @@ function LeaguesComponent() {
         });
     }
 
-    const renderRegistrantDetails = (registrant, leagueAdminId, shouldDisplayDecks) => {
+    const handleChange = async (event, index) => {
+        console.log(event);
+        confirmAlert({
+            title: 'Confirm Deck Submission',
+            message: `Are You Sure You Want To Submit Deck ${event.label}`,
+            buttons: [
+                {
+                    label: 'Yes',
+                    onClick: () => {
+                        apiServices.registerLeagueDeck(state.generalStates.user.accessToken, state.generalStates.user.id, event.value)
+                            .then(res => {
+                                actions.generalActions.setUser(res.data)
+                                reset();
+                                displayToast('Successfully Registered Your Deck', 'success')
+                            })
+                            .catch(err => {
+                                console.log(err.response)
+                                reset();
+                                displayToast(err.response.data.message, 'error')
+                            })
+                    }
+                },
+                {
+                    label: 'No',
+                    onClick: () => { }
+                }
+            ]
+        });
+    }
+
+    const renderRegistrantDetails = (registrant, leagueAdminId, shouldDisplayDecks, leagueId) => {
         const isUser = registrant.email === state.generalStates.user.email;
 
         return (
@@ -148,19 +184,30 @@ function LeaguesComponent() {
                                             </AwesomeButton>
                                         </span>
                                         :
-                                        <span>
-                                            <AwesomeButton type="primary" size="large"
-                                                onPress={() =>
-                                                    displayToast('Submit Deck Will Be Implemented Soon', 'warning')
-                                                }>
-                                                Submit Your Deck
-                                            </AwesomeButton>
-                                        </span>
+                                        <Column>
+                                            <Column flexGrow={1}>
+                                                <AwesomeButton type="primary" size="large"
+                                                    onPress={() => {
+                                                        console.log('clicked here')
+                                                    }
+                                                    }>
+                                                    Submit Your Deck
+                                                </AwesomeButton>
+                                            </Column>
+                                            <Dropdown key='tester' options={state.generalStates.user.decksForSubmission.map(decks => {
+                                                return {
+                                                    label: decks.label,
+                                                    value: leagueId + "-" + decks.value
+                                                }
+                                            })}
+                                                onChange={handleChange}
+                                                placeholder="Select A Deck To Submit" />
+                                        </Column>
                                     : registrant.deck_id ?
                                         <Row vertical='center'>
                                             <AwesomeButton type="secondary" size="large"
                                                 onPress={() =>
-                                                    displayToast('Awaiting Admin To Set Deck Reveal Date', 'warning')
+                                                    displayToast('Awaiting Deck Reveal Date', 'warning')
                                                 }
                                             >
                                                 <Row vertical='center' flex={1}><FaLock />
@@ -183,6 +230,8 @@ function LeaguesComponent() {
                                         </Row>
                         }
                     </Row>
+                    <Row vertical='center'>
+                    </Row>
                 </Column>
             </Row>
         )
@@ -197,14 +246,16 @@ function LeaguesComponent() {
                             <CardComponent
                                 title={league.name}
                                 link='View details'
-                                subtitle={`Id: ${league.id}`}
-                                subtitleTwo={`Registrants: ${league.registrants.length}`}
-                                subtitleThree={league.start_date ? `Start Date: ${league.start_date}` : 'Start Date: Not Set'}
-                                subtitleFour={league.end_date ? `End Date: ${league.end_date}` : 'End Date: Not Set'}
-                                subtitleFive={league.deck_reveal_date ? `Deck Reveal Date: ${league.deck_reveal_date}` : 'Deck Reveal Date: Not Set'}
+                                subtitle={`Id: ${league.id}, 
+                                Registrants: ${league.registrants.length},
+                                    Start Date: ${league.start_date ? league.start_date : "Not Set"},
+                                    End Date: ${league.end_date ? league.end_date : "Not Set"},
+                                    Deck Reveal Date: ${league.deck_reveal_date ? league.deck_reveal_date : "Not Set"}
+                                    `
+                                }
                                 items={
                                     league.registrants.map((registrant) => (
-                                        renderRegistrantDetails(registrant, league.admin_id, league.shouldDisplayDecks)
+                                        renderRegistrantDetails(registrant, league.admin_id, league.shouldDisplayDecks, league.id)
                                     ))}>
                             </CardComponent >
                         </Row>

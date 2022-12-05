@@ -54,6 +54,12 @@ function SidebarComponent() {
                 icon={IconSubscription}
                 onClick={() => onClick(SLUGS.leagues)}
             />
+            <MenuItem
+                id={SLUGS.decks}
+                title='Decks'
+                icon={IconSubscription}
+                onClick={() => onClick(SLUGS.decks)}
+            />
             {/* <MenuItem
                 id={SLUGS.dashboard}
                 title='SSS'
