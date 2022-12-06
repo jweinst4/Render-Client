@@ -153,18 +153,28 @@ function LeaguesComponent() {
                     {registrant.user_id === leagueAdminId ? <GrUserAdmin /> : null}
                 </Column>
                 <Column flex={.49}>
-                    <Row vertical='center'>
+                    <Row vertical='center' flex={1}>
                         {
                             shouldDisplayDecks ? registrant.deck_name ?
-                                <span>
-                                    <AwesomeButton type={isUser ? "primary" : "secondary"} size="large"
-                                        onPress={(event) => {
-                                            event.preventDefault()
-                                            window.open(registrant.deck_url, "_blank")
-                                        }}
-                                    >{registrant.deck_name}
-                                    </AwesomeButton>
-                                </span>
+                                <Row flex={1} vertical='center'>
+                                    <Column flex={.5}>
+                                        <AwesomeButton type={isUser ? "primary" : "secondary"} size="large"
+                                            onPress={(event) => {
+                                                event.preventDefault()
+                                                window.open(registrant.deck_url, "_blank")
+                                            }}
+                                        >
+                                            {registrant.deck_name}
+                                        </AwesomeButton>
+                                    </Column>
+                                    <Column flex={.5}>
+                                        <Row>
+                                            <a target="_blank" href={registrant.deck_url}>
+                                                Moxfield Link
+                                            </a>
+                                        </Row>
+                                    </Column>
+                                </Row>
                                 :
                                 <span>
                                     <AwesomeButton type={isUser ? "primary" : "secondary"} size="large">
@@ -174,7 +184,7 @@ function LeaguesComponent() {
                                 :
                                 isUser ?
                                     registrant.deck_name ?
-                                        <span>
+                                        <Row>
                                             <AwesomeButton type="primary" size="large"
                                                 onPress={(event) => {
                                                     event.preventDefault()
@@ -182,7 +192,11 @@ function LeaguesComponent() {
                                                 }}>
                                                 {registrant.deck_name}
                                             </AwesomeButton>
-                                        </span>
+
+                                            "Moxfield Link"
+
+                                        </Row>
+
                                         :
                                         <Column>
                                             <Column flexGrow={1}>
