@@ -169,7 +169,10 @@ function LeaguesComponent() {
                                     </Column>
                                     <Column flex={.5}>
                                         <Row>
-                                            <a target="_blank" href={registrant.deck_url}>
+                                            <a target="_blank"
+                                                href={registrant.deck_url}
+                                                style={{ textDecoration: 'none', color: '#1360A4' }}
+                                            >
                                                 Moxfield Link
                                             </a>
                                         </Row>
