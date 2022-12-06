@@ -171,7 +171,7 @@ function LeaguesComponent() {
                                         <Row>
                                             <a target="_blank"
                                                 href={registrant.deck_url}
-                                                style={{ textDecoration: 'none', color: '#1360A4' }}
+                                                style={{ textDecoration: 'none', color: '#1E88E5', opacity: .9 }}
                                             >
                                                 Moxfield Link
                                             </a>
@@ -195,11 +195,7 @@ function LeaguesComponent() {
                                                 }}>
                                                 {registrant.deck_name}
                                             </AwesomeButton>
-
-                                            "Moxfield Link"
-
                                         </Row>
-
                                         :
                                         <Column>
                                             <Column flexGrow={1}>
