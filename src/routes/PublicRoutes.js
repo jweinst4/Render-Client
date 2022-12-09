@@ -4,14 +4,12 @@ import SLUGS from 'resources/slugs';
 import LoadingComponent from 'components/loading';
 
 const LoginComponent = lazy(() => import('./login'));
-const ShirtPricingComponent = lazy(() => import('./shirtpricing'));
 
 function PublicRoutes(props) {
     return (
         <Suspense fallback={<LoadingComponent loading />}>
             <Switch>
                 <Route exact path={SLUGS.login} component={LoginComponent} state={props.state} setState={props.setState} />
-                <Route exact path={SLUGS.shirtpricing} component={ShirtPricingComponent} state={props.state} setState={props.setState} />
                 {/* <Route exact path={SLUGS.dashboard} component={DashboardComponent} />
                 <Route exact path={SLUGS.overviewTwo} render={() => <div>overviewTwo</div>} />
                 <Route exact path={SLUGS.overviewThree} render={() => <div>overviewThree</div>} />
@@ -25,7 +23,7 @@ function PublicRoutes(props) {
                 <Route exact path={SLUGS.articles} render={() => <div>articles</div>} />
                 <Route exact path={SLUGS.settings} render={() => <div>settings</div>} />
                 <Route exact path={SLUGS.subscription} render={() => <div>subscription</div>} /> */}
-                {/* <Redirect to={SLUGS.login} /> */}
+                <Redirect to={SLUGS.login} />
             </Switch>
         </Suspense>
     );

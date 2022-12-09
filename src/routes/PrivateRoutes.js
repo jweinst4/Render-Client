@@ -6,6 +6,7 @@ import LoadingComponent from 'components/loading';
 const DashboardComponent = lazy(() => import('./dashboard'));
 const LeaguesComponent = lazy(() => import('./leagues'));
 const DecksComponent = lazy(() => import('./decks'));
+const ShirtPricingComponent = lazy(() => import('./shirtpricing'));
 
 function PrivateRoutes() {
     return (
@@ -26,6 +27,7 @@ function PrivateRoutes() {
                 <Route exact path={SLUGS.articles} render={() => <div>articles</div>} />
                 <Route exact path={SLUGS.settings} render={() => <div>settings</div>} />
                 <Route exact path={SLUGS.subscription} render={() => <div>subscription</div>} />
+                <Route exact path={SLUGS.shirtpricing} component={ShirtPricingComponent} />
                 <Redirect to={SLUGS.leagues} />
             </Switch>
         </Suspense>
