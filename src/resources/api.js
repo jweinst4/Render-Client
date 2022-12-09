@@ -1,6 +1,28 @@
 import axios from 'axios';
 const url = process.env.REACT_APP_SERVER_URL
 
+export function getShirtPrices() {
+    console.log('get shirt prices at api');
+    console.log(url)
+
+    return new Promise((resolve, reject) => {
+        axios({
+            url: url + "shirtprices",
+            method: "GET",
+        })
+            .then(res => {
+                console.log('resolve res');
+                console.log(res);
+                resolve(res)
+            })
+            .catch(err => {
+                console.log('error');
+                console.log(err)
+                reject(err)
+            })
+    })
+}
+
 export function login(token, type, sub, email) {
     return new Promise((resolve, reject) => {
         let data =
