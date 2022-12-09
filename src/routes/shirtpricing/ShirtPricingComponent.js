@@ -142,7 +142,6 @@ function ShirtPricingComponent() {
 
     return (
         <Row>
-
             <Column flex={.5}>
                 <ToastContainer />
                 <form
@@ -169,11 +168,6 @@ function ShirtPricingComponent() {
                         const printSideTwoCost = printSideTwoColors ? getPrintCost(shirtQuantityBucket, printSideTwoColors) : 0;
                         setPrintSideTwoCost(printSideTwoCost);
 
-                        console.log('net cost');
-                        console.log(printSideOneCost);
-                        console.log(printSideTwoCost);
-                        console.log(shirtCost);
-
                         const netCost = (printSideOneCost + printSideTwoCost + shirtCost)
                         setNetCost(netCost);
 
@@ -187,27 +181,47 @@ function ShirtPricingComponent() {
                         reset();
                     })}
                 >
-                    <div>
-                        <label style={{}} htmlFor="deckName">Quantity</label>
-                        <input style={{}} {...register("quantity")} />
-                    </div>
-                    <div style={{}}>
-                        <label htmlFor="deckName">Print Side One Colors</label>
-                        <input style={{}} {...register("printSideOneColors")} />
-                    </div>
-                    <div style={{}}>
-                        <label htmlFor="deckName">Print Side Two Colors</label>
-                        <input style={{}} {...register("printSideTwoColors")} />
-                    </div>
-                    <div style={{}}>
-                        <label htmlFor="deckName">Shirt Cost (1.50 for $1.50, 2.00 for $2.00, etc.)</label>
-                        <input style={{}} {...register("shirtCost")} />
-                    </div>
-                    <div style={{}}>
-                        <label htmlFor="deckName">Mark Up (50 for 50%, 100 for 100%, etc.)</label>
-                        <input style={{}} {...register("markUp")} />
-                    </div>
-                    <input type="submit" value='Get Price Quote' />
+                    <Row style={{ margin: '10px' }}>
+                        <Column flex={.5} style={{ marginRight: '10px' }}>
+                            Quantity
+                        </Column>
+                        <Column flex={.5} style={{ marginRight: '10px' }}>
+                            <input style={{}} {...register("quantity")} />
+                        </Column>
+                    </Row>
+                    <Row style={{ margin: '10px' }}>
+                        <Column flex={.5} style={{ marginRight: '10px' }}>
+                            Print Side One Colors
+                        </Column>
+                        <Column flex={.5} style={{ marginRight: '10px' }}>
+                            <input style={{}} {...register("printSideOneColors")} />
+                        </Column>
+                    </Row>
+                    <Row style={{ margin: '10px' }}>
+                        <Column flex={.5} style={{ marginRight: '10px' }}>
+                            Print Side Two Colors
+                        </Column>
+                        <Column flex={.5} style={{ marginRight: '10px' }}>
+                            <input style={{}} {...register("printSideTwoColors")} />
+                        </Column>
+                    </Row>
+                    <Row style={{ margin: '10px' }}>
+                        <Column flex={.5} style={{ marginRight: '10px' }}>
+                            Shirt Cost (1.50 for $1.50, 2.00 for $2.00, etc.)
+                        </Column>
+                        <Column flex={.5} style={{ marginRight: '10px' }}>
+                            <input style={{}} {...register("shirtCost")} />
+                        </Column>
+                    </Row>
+                    <Row style={{ margin: '10px' }}>
+                        <Column flex={.5} style={{ marginRight: '10px' }}>
+                            Mark Up (50 for 50%, 100 for 100%, etc.)
+                        </Column>
+                        <Column flex={.5} style={{ marginRight: '10px' }}>
+                            <input style={{}} {...register("markUp")} />
+                        </Column>
+                    </Row>
+                    <input style={{ margin: '10px' }} type="submit" value='Get Price Quote' />
                 </form>
             </Column>
 
@@ -215,7 +229,6 @@ function ShirtPricingComponent() {
             <Column flex={0.5}>
                 <div>
                     Quantity: {shirtQuantity ? shirtQuantity : 0}
-
                 </div>
                 <div style={{}}>
                     Print Side One Colors: {printSideOneColors ? printSideOneColors : 0}
