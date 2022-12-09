@@ -224,43 +224,41 @@ function ShirtPricingComponent() {
                     <input style={{ margin: '10px' }} type="submit" value='Get Price Quote' />
                 </form>
             </Column>
-
-
             <Column flex={0.5}>
-                <div>
+                <Row style={{ margin: '10px' }}>
                     Quantity: {shirtQuantity ? shirtQuantity : 0}
-                </div>
-                <div style={{}}>
+                </Row>
+                <Row style={{ margin: '10px' }}>
                     Print Side One Colors: {printSideOneColors ? printSideOneColors : 0}
-                </div>
-                <div style={{}}>
+                </Row>
+                <Row style={{ margin: '10px' }}>
                     Print Side Two Colors: {printSideTwoColors ? printSideTwoColors : 0}
-                </div>
-                <div style={{}}>
+                </Row>
+                <Row style={{ margin: '10px' }}>
                     Print Side One Cost: ${shirtQuantity && printSideOneColors ? printSideOneCost : 0}
-                </div>
-                <div style={{}}>
+                </Row>
+                <Row style={{ margin: '10px' }}>
                     Print Side Two Cost: ${shirtQuantity && printSideTwoColors ? printSideTwoCost : 0}
-                </div>
-                <div style={{}}>
+                </Row>
+                <Row style={{ margin: '10px' }}>
                     Shirt Cost: ${shirtCost ? shirtCost : 0}
-                </div>
-                <div style={{}}>
+                </Row>
+                <Row style={{ margin: '10px' }}>
                     Net Cost: $
                     {netCost ? netCost : 0}
-                </div>
-                <div style={{}}>
+                </Row>
+                <Row style={{ margin: '10px' }}>
                     Mark Up:  {markUp ? markUp : 0}%
-                </div>
-                <div style={{}}>
+                </Row>
+                <Row style={{ margin: '10px' }}>
                     Profit: ${profit ? profit : 0}
-                </div>
-                <div style={{}}>
+                </Row>
+                <Row style={{ margin: '10px' }}>
                     Total Cost: ${totalCost ? totalCost : 0}
-                </div>
-                <div style={{}}>
+                </Row>
+                <Row style={{ margin: '10px' }}>
                     Total Profit: ${totalProfit ? totalProfit : 0}
-                </div>
+                </Row>
             </Column>
 
         </Row>
