@@ -25,7 +25,7 @@ function PublicRoutes(props) {
                 <Route exact path={SLUGS.articles} render={() => <div>articles</div>} />
                 <Route exact path={SLUGS.settings} render={() => <div>settings</div>} />
                 <Route exact path={SLUGS.subscription} render={() => <div>subscription</div>} /> */}
-                <Redirect to={SLUGS.login} />
+                {/* <Redirect to={SLUGS.login} /> */}
             </Switch>
         </Suspense>
     );
