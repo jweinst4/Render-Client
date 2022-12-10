@@ -23,6 +23,47 @@ export function getShirtPrices() {
     })
 }
 
+export function getEmbroideryShirtPrices() {
+    console.log('get embroidery shirt prices at api');
+    console.log(url)
+
+    return new Promise((resolve, reject) => {
+        axios({
+            url: url + "embroideryshirtprices",
+            method: "GET",
+        })
+            .then(res => {
+                console.log('resolve res');
+                console.log(res);
+                resolve(res)
+            })
+            .catch(err => {
+                console.log('error');
+                console.log(err)
+                reject(err)
+            })
+    })
+}
+
+export function getPricingList() {
+    return new Promise((resolve, reject) => {
+        axios({
+            url: url + "pricinglist",
+            method: "GET",
+        })
+            .then(res => {
+                console.log('resolve res');
+                console.log(res);
+                resolve(res)
+            })
+            .catch(err => {
+                console.log('error');
+                console.log(err)
+                reject(err)
+            })
+    })
+}
+
 export function login(token, type, sub, email) {
     return new Promise((resolve, reject) => {
         let data =

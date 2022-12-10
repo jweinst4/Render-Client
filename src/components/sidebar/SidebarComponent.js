@@ -62,9 +62,21 @@ function SidebarComponent() {
             />
             <MenuItem
                 id={SLUGS.shirtpricing}
-                title='Shirt Pricing'
+                title='Light/Dark Shirt Pricing'
                 icon={IconSubscription}
                 onClick={() => onClick(SLUGS.shirtpricing)}
+            />
+            <MenuItem
+                id={SLUGS.embroiderypricing}
+                title='Embroidery Pricing'
+                icon={IconSubscription}
+                onClick={() => onClick(SLUGS.embroiderypricing)}
+            />
+            <MenuItem
+                id={SLUGS.pricelist}
+                title='Price List'
+                icon={IconSubscription}
+                onClick={() => onClick(SLUGS.pricelist)}
             />
             {/* <MenuItem
                 id={SLUGS.dashboard}

@@ -17,7 +17,6 @@ import 'react-dropdown/style.css';
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
 
-
 const useStyles = createUseStyles({
 
     cardsContainer: {
@@ -99,16 +98,6 @@ function ShirtPricingComponent() {
         fetchData().catch(console.error);
     }, []);
 
-    const displayToast = (message, type) => {
-        toast(message, {
-            position: "top-right",
-            autoClose: 2000,
-            hideProgressBar: true,
-            type: type,
-            theme: "light",
-        });
-    }
-
     const getShirtQuantityBucket = (shirtQuantity) => {
         switch (true) {
             case (shirtQuantity >= 6 && shirtQuantity <= 11):
@@ -140,8 +129,8 @@ function ShirtPricingComponent() {
         ).price)
     }
 
-    return (
-        <Row>
+    const lightAndDarkPricingComponent = () => {
+        return <Row>
             <Column flex={.5}>
                 <ToastContainer />
                 <form
@@ -221,47 +210,106 @@ function ShirtPricingComponent() {
                             <input style={{}} {...register("markUp")} />
                         </Column>
                     </Row>
-                    <input style={{ margin: '10px' }} type="submit" value='Get Price Quote' />
+                    <input style={{ flex: 1, width: '100px' }} label='submit' type='submit' {...register('tester')} />
                 </form>
             </Column>
             <Column flex={0.5}>
                 <Row style={{ margin: '10px' }}>
-                    Quantity: {shirtQuantity ? shirtQuantity : 0}
+                    <Column flex={0.5}>
+                        Quantity:
+                    </Column>
+                    <Column flex={0.5}>
+                        {shirtQuantity ? shirtQuantity : 0}
+                    </Column>
                 </Row>
                 <Row style={{ margin: '10px' }}>
-                    Print Side One Colors: {printSideOneColors ? printSideOneColors : 0}
+                    <Column flex={0.5}>
+                        Print Side One Colors:
+                    </Column>
+                    <Column flex={0.5}>
+                        {printSideOneColors ? printSideOneColors : 0}
+                    </Column>
                 </Row>
                 <Row style={{ margin: '10px' }}>
-                    Print Side Two Colors: {printSideTwoColors ? printSideTwoColors : 0}
+                    <Column flex={0.5}>
+                        Print Side Two Colors:
+                    </Column>
+                    <Column flex={0.5}>
+                        {printSideTwoColors ? printSideTwoColors : 0}
+                    </Column>
                 </Row>
                 <Row style={{ margin: '10px' }}>
-                    Print Side One Cost: ${shirtQuantity && printSideOneColors ? printSideOneCost : 0}
+                    <Column flex={0.5}>
+                        Print Side One Cost:
+                    </Column>
+                    <Column flex={0.5}>
+                        ${shirtQuantity && printSideOneColors ? (Math.round(printSideOneCost * 100) / 100).toFixed(2) : 0}
+                    </Column>
                 </Row>
                 <Row style={{ margin: '10px' }}>
-                    Print Side Two Cost: ${shirtQuantity && printSideTwoColors ? printSideTwoCost : 0}
+                    <Column flex={0.5}>
+                        Print Side Two Cost:
+                    </Column>
+                    <Column flex={0.5}>
+                        ${shirtQuantity && printSideTwoColors ? (Math.round(printSideTwoCost * 100) / 100).toFixed(2) : 0}
+                    </Column>
                 </Row>
                 <Row style={{ margin: '10px' }}>
-                    Shirt Cost: ${shirtCost ? shirtCost : 0}
+                    <Column flex={0.5}>
+                        Shirt Cost:
+                    </Column>
+                    <Column flex={0.5}>
+                        ${shirtCost ? (Math.round(shirtCost * 100) / 100).toFixed(2) : 0}
+                    </Column>
                 </Row>
                 <Row style={{ margin: '10px' }}>
-                    Net Cost: $
-                    {netCost ? netCost : 0}
+                    <Column flex={0.5}>
+                        Net Cost:
+                    </Column>
+                    <Column flex={0.5}>
+                        ${netCost ? (Math.round(netCost * 100) / 100).toFixed(2) : 0}
+                    </Column>
                 </Row>
                 <Row style={{ margin: '10px' }}>
-                    Mark Up:  {markUp ? markUp : 0}%
+                    <Column flex={0.5}>
+                        Mark Up:
+                    </Column>
+                    <Column flex={0.5}>
+                        {markUp ? (Math.round(markUp * 100) / 100).toFixed(2) : 0}%
+                    </Column>
                 </Row>
                 <Row style={{ margin: '10px' }}>
-                    Profit: ${profit ? profit : 0}
+                    <Column flex={0.5}>
+                        Profit:
+                    </Column>
+                    <Column flex={0.5}>
+                        ${profit ? (Math.round(profit * 100) / 100).toFixed(2) : 0}
+                    </Column>
                 </Row>
                 <Row style={{ margin: '10px' }}>
-                    Total Cost: ${totalCost ? totalCost : 0}
+                    <Column flex={0.5}>
+                        Total Cost:
+                    </Column>
+                    <Column flex={0.5}>
+                        ${totalCost ? (Math.round(totalCost * 100) / 100).toFixed(2) : 0}
+                    </Column>
                 </Row>
                 <Row style={{ margin: '10px' }}>
-                    Total Profit: ${totalProfit ? totalProfit : 0}
+                    <Column flex={0.5}>
+                        Total Profit:
+                    </Column>
+                    <Column flex={0.5}>
+                        ${totalProfit ? (Math.round(totalProfit * 100) / 100).toFixed(2) : 0}
+                    </Column>
                 </Row>
             </Column>
-
         </Row>
+    }
+
+    return (
+        <Column >
+            {lightAndDarkPricingComponent()}
+        </Column>
     );
 }
 

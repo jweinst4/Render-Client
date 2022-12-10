@@ -19,5 +19,7 @@ export default {
     forgotPassword: '/forgot_password',
     leagues: '/leagues',
     decks: '/decks',
-    shirtpricing: '/shirtpricing'
+    shirtpricing: '/shirtpricing',
+    embroiderypricing: '/embroiderypricing',
+    pricelist: '/pricelist'
 };

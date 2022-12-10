@@ -7,6 +7,8 @@ const DashboardComponent = lazy(() => import('./dashboard'));
 const LeaguesComponent = lazy(() => import('./leagues'));
 const DecksComponent = lazy(() => import('./decks'));
 const ShirtPricingComponent = lazy(() => import('./shirtpricing'));
+const EmbroideryPricingComponent = lazy(() => import('./embroiderypricing'));
+const PriceListComponent = lazy(() => import('./pricelist'));
 
 function PrivateRoutes() {
     return (
@@ -28,6 +30,8 @@ function PrivateRoutes() {
                 <Route exact path={SLUGS.settings} render={() => <div>settings</div>} />
                 <Route exact path={SLUGS.subscription} render={() => <div>subscription</div>} />
                 <Route exact path={SLUGS.shirtpricing} component={ShirtPricingComponent} />
+                <Route exact path={SLUGS.embroiderypricing} component={EmbroideryPricingComponent} />
+                <Route exact path={SLUGS.pricelist} component={PriceListComponent} />
                 <Redirect to={SLUGS.leagues} />
             </Switch>
         </Suspense>
