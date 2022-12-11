@@ -1,21 +1,8 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Column, Row } from 'simple-flexbox';
 import { createUseStyles } from 'react-jss';
-import CardComponent from 'components/cards/CardComponent';
 import { StoreContext } from "../../context/store/storeContext";
 import LoadingComponent from '../../components/loading';
 import * as apiServices from '../../resources/api';
-import { ToastContainer, toast } from 'react-toastify';
-import { useForm } from 'react-hook-form';
-import 'react-toastify/dist/ReactToastify.css';
-import { AwesomeButton } from 'react-awesome-button';
-import 'react-awesome-button/dist/styles.css';
-import { FaLock } from "react-icons/fa";
-import { GrUserAdmin } from "react-icons/gr";
-import Dropdown from 'react-dropdown';
-import 'react-dropdown/style.css';
-import { confirmAlert } from 'react-confirm-alert';
-import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
 
 const useStyles = createUseStyles({
 
@@ -64,15 +51,6 @@ function PriceListComponent() {
 
     const [prices, setPrices] = useState();
 
-    const {
-        register,
-        formState: { errors },
-        handleSubmit,
-        reset
-    } = useForm({
-        mode: "onBlur",
-    });
-
     useEffect(() => {
         const fetchData = async () => {
             actions.generalActions.setisbusy()
@@ -90,28 +68,6 @@ function PriceListComponent() {
         return <LoadingComponent loading />
     }
 
-    const renderTableItem = (shirtQuantityBucket, colorQuantity) => {
-        const price = (Math.round(prices.shirtPrices.find(element => element.quantity === shirtQuantityBucket && element.colors === colorQuantity).price * 100) / 100).toFixed(2);
-
-        if (price) {
-            return price
-        }
-        else {
-            return 0
-        }
-    }
-
-    const renderEmbroideryTableItem = (shirtQuantityBucket, stitchCountBucket) => {
-        const price = (Math.round(prices.embroideryPrices.find(element => element.quantity === shirtQuantityBucket && element.stitches === stitchCountBucket).price * 100) / 100).toFixed(2);
-
-        if (price) {
-            return price
-        }
-        else {
-            return 0
-        }
-    }
-
     return (
         prices ? (
             <div>
@@ -119,26 +75,22 @@ function PriceListComponent() {
                     <caption>Light And Dark Shirt Pricing:</caption>
                     <tr >
                         <td></td>
-                        <th align='left' scope="col">1C</th>
-                        <th align='left' scope="col">2C</th>
-                        <th align='left' scope="col">3C</th>
-                        <th align='left' scope="col">4C</th>
-                        <th align='left' scope="col">5C</th>
-                        <th align='left' scope="col">6C</th>
+                        {prices.shirtColorQuantities.map(item => {
+                            return <th style={{ textAlign: 'left' }} scope="col">{item}C</th>
+                        })}
                     </tr>
-                    {['6-11', '12-36', '37-72', '73-144', '145-287', '288-499', '500-999', '1000-4999', '5000+'].map(item => {
+                    {prices.shirtPricingBuckets.map(item => {
                         return (
                             <tr>
-                                <th style={{ textAlign: 'center' }} scope="row">{item}</th>
-                                {[1, 2, 3, 4, 5, 6].map(itemTwo => {
+                                <th style={{ textAlign: 'center' }} scope="row">{item.shirtQuantityBucket}</th>
+                                {item.prices.map(itemTwo => {
                                     return (
-                                        <td>{
-                                            '$' + renderTableItem(item, itemTwo)
-                                        }</td>
+                                        <td>
+                                            {'$' + (Math.round(itemTwo.price * 100) / 100).toFixed(2)}
+                                        </td>
                                     )
                                 })}
                             </tr>
-
                         )
                     })
                     }
@@ -149,39 +101,29 @@ function PriceListComponent() {
                     <caption>Embroidery Pricing:</caption>
                     <tr >
                         <td></td>
-                        <th align='left' scope="col">1-5k</th>
-                        <th align='left' scope="col">5k-7k</th>
-                        <th align='left' scope="col">7k-9k</th>
-                        <th align='left' scope="col">9k-11k</th>
-                        <th align='left' scope="col">11k-13k</th>
-                        <th align='left' scope="col">13k-15k</th>
-                        <th align='left' scope="col">15k-17k</th>
-                        <th align='left' scope="col">17k-19k</th>
-                        <th align='left' scope="col">19k-21k</th>
-                        <th align='left' scope="col">21k+</th>
+                        {prices.embroideryStitchBuckets.map(item => {
+                            return <th align='left' scope="col">{item}</th>
+                        })}
                     </tr>
-                    {['1-5', '6-11', '12-23', '24-47', '48-99', '100-248'].map(item => {
+                    {prices.embroideryPricingBuckets.map(item => {
                         return (
                             <tr>
-                                <th style={{ textAlign: 'center' }} scope="row">{item}</th>
-                                {['1-4999', '5000-6999', '7000-8999', '9000-10999', '11000-12999', '13000-14999', '15000-16999', '17000-18999', '19000-20999', '21000+'].map(itemTwo => {
+                                <th style={{ textAlign: 'center' }} scope="row">{item.embroideryQuantityBucket}</th>
+                                {item.prices.map(itemTwo => {
                                     return (
-                                        <td>{
-                                            '$' + renderEmbroideryTableItem(item, itemTwo)
-                                        }</td>
+                                        <td>
+                                            {'$' + (Math.round(itemTwo.price * 100) / 100).toFixed(2)}
+                                        </td>
                                     )
                                 })}
                             </tr>
-
                         )
                     })
                     }
                 </table >
             </div>
         )
-
             : null
-
     );
 }
 
