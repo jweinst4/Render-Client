@@ -111,7 +111,7 @@ function PriceListComponent() {
                                                 </Column>
                                                 <Column horizontal='center' vertical='center' flex={.5}>
                                                     <FaEdit size='15px' onClick={() => {
-                                                        displayToast('Edit In The Works for Shirt Quantity Bucket ' + item.shirtQuantityBucket + ' and ' + itemTwo.colors + ' Colors', 'warning')
+                                                        displayToast('Awaiting Edit functionality for Shirt Quantity Bucket ' + item.shirtQuantityBucket + ' and ' + itemTwo.colors + ' Colors', 'warning')
                                                     }} />
                                                 </Column>
                                             </Row>
@@ -150,7 +150,7 @@ function PriceListComponent() {
                                                 </Column>
                                                 <Column horizontal='center' vertical='center' flex={.5}>
                                                     <FaEdit size='15px' onClick={() => {
-                                                        displayToast('Edit In The Works for Embroidery Quantity Bucket ' + item.embroideryQuantityBucket + ' and ' + itemTwo.stitches + ' Stitches', 'warning')
+                                                        displayToast('Awaiting Edit functionality for Embroidery Quantity Bucket ' + item.embroideryQuantityBucket + ' and ' + itemTwo.stitches + ' Stitches', 'warning')
                                                     }} />
                                                 </Column>
                                             </Row>
