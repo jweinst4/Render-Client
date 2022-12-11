@@ -89,14 +89,20 @@ function ShirtPricingComponent() {
 
     useEffect(() => {
         const fetchData = async () => {
+            actions.generalActions.setisbusy()
             await apiServices.getShirtPrices()
                 .then(res => {
                     setdbPrices(res.data);
+                    actions.generalActions.resetisbusy();
                 })
                 .catch(err => console.log(err.response))
         }
         fetchData().catch(console.error);
     }, []);
+
+    if (state.generalStates.isBusy) {
+        return <LoadingComponent loading />
+    }
 
     const getShirtQuantityBucket = (shirtQuantity) => {
         switch (true) {
@@ -210,7 +216,9 @@ function ShirtPricingComponent() {
                             <input style={{}} {...register("markUp")} />
                         </Column>
                     </Row>
-                    <input style={{ flex: 1, width: '100px' }} label='submit' type='submit' {...register('tester')} />
+                    <AwesomeButton size="large" type="secondary">
+                        Get Price Quote
+                    </AwesomeButton>
                 </form>
             </Column>
             <Column flex={0.5}>

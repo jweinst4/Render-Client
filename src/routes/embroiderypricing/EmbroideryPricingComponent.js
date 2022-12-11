@@ -109,14 +109,20 @@ function EmbroideryPricingComponent() {
 
     useEffect(() => {
         const fetchData = async () => {
+            actions.generalActions.setisbusy()
             await apiServices.getEmbroideryShirtPrices()
                 .then(res => {
                     setEmbroideryDbPrices(res.data);
+                    actions.generalActions.resetisbusy();
                 })
                 .catch(err => console.log(err.response))
         }
         fetchData().catch(console.error);
     }, []);
+
+    if (state.generalStates.isBusy) {
+        return <LoadingComponent loading />
+    }
 
     const displayToast = (message, type) => {
         toast(message, {
@@ -126,31 +132,6 @@ function EmbroideryPricingComponent() {
             type: type,
             theme: "light",
         });
-    }
-
-    const getShirtQuantityBucket = (shirtQuantity) => {
-        switch (true) {
-            case (shirtQuantity >= 6 && shirtQuantity <= 11):
-                return '6-11';
-            case (shirtQuantity >= 12 && shirtQuantity <= 36):
-                return '12-36';
-            case (shirtQuantity >= 37 && shirtQuantity <= 72):
-                return '37-72';
-            case (shirtQuantity >= 73 && shirtQuantity <= 144):
-                return '73-144';
-            case (shirtQuantity >= 145 && shirtQuantity <= 287):
-                return '145-287';
-            case (shirtQuantity >= 288 && shirtQuantity <= 499):
-                return '288-499';
-            case (shirtQuantity >= 500 && shirtQuantity <= 999):
-                return '500-999';
-            case (shirtQuantity >= 1000 && shirtQuantity <= 4999):
-                return '1000-4999';
-            case (shirtQuantity >= 5000):
-                return '5000+';
-            default:
-                console.log(`Quantity Not Found`);
-        }
     }
 
     const getEmbroideryShirtQuantityBucket = (shirtQuantity) => {
@@ -207,12 +188,6 @@ function EmbroideryPricingComponent() {
             default:
                 console.log(`Quantity Not Found`);
         }
-    }
-
-    const getPrintCost = (shirtQuantityBucket, numberOfColors) => {
-        return parseFloat(dbPrices.find(obj =>
-            obj.quantity == shirtQuantityBucket && obj.colors === parseInt(numberOfColors)
-        ).price)
     }
 
     const getEmbroideryPrintCost = (embroideryShirtQuantityBucket, stitchQuantityBucket) => {
@@ -336,9 +311,9 @@ function EmbroideryPricingComponent() {
                             <input style={{}} {...register2("markUp")} />
                         </Column>
                     </Row>
-                    <Row>
-                        <input style={{}} type='submit' {...register2('leagueId')} />
-                    </Row>
+                    <AwesomeButton size="large" type="secondary">
+                        Get Price Quote
+                    </AwesomeButton>
                 </form>
             </Column>
             <Column flex={0.5}>
