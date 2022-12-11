@@ -3,6 +3,9 @@ import { createUseStyles } from 'react-jss';
 import { StoreContext } from "../../context/store/storeContext";
 import LoadingComponent from '../../components/loading';
 import * as apiServices from '../../resources/api';
+import { FaEdit } from "react-icons/fa";
+import { Column, Row } from 'simple-flexbox';
+import { ToastContainer, toast } from 'react-toastify';
 
 const useStyles = createUseStyles({
 
@@ -68,15 +71,30 @@ function PriceListComponent() {
         return <LoadingComponent loading />
     }
 
+    const displayToast = (message, type) => {
+        toast(message, {
+            position: "top-right",
+            autoClose: 2000,
+            hideProgressBar: true,
+            type: type,
+            theme: "light",
+        });
+    }
+
     return (
         prices ? (
             <div>
+                <ToastContainer />
                 <table style={{ width: '100%' }}>
                     <caption>Light And Dark Shirt Pricing:</caption>
-                    <tr >
+                    <tr>
                         <td></td>
                         {prices.shirtColorQuantities.map(item => {
-                            return <th style={{ textAlign: 'left' }} scope="col">{item}C</th>
+                            return (
+                                <th style={{ borderLeft: "1px solid rgb(0, 0, 0)" }} textAlign='center' scope="col">
+                                    {item}
+                                </th>
+                            )
                         })}
                     </tr>
                     {prices.shirtPricingBuckets.map(item => {
@@ -84,9 +102,19 @@ function PriceListComponent() {
                             <tr>
                                 <th style={{ textAlign: 'center' }} scope="row">{item.shirtQuantityBucket}</th>
                                 {item.prices.map(itemTwo => {
+                                    console.log(itemTwo)
                                     return (
-                                        <td>
-                                            {'$' + (Math.round(itemTwo.price * 100) / 100).toFixed(2)}
+                                        <td style={{ textAlign: 'center', justifyContent: 'center' }} >
+                                            <Row style={{ borderLeft: "1px solid rgb(0, 0, 0)" }}>
+                                                <Column flex={.5}>
+                                                    {'$' + (Math.round(itemTwo.price * 100) / 100).toFixed(2)}
+                                                </Column>
+                                                <Column horizontal='center' vertical='center' flex={.5}>
+                                                    <FaEdit size='15px' onClick={() => {
+                                                        displayToast('Edit In The Works for Shirt Quantity Bucket ' + item.shirtQuantityBucket + ' and ' + itemTwo.colors + ' Colors', 'warning')
+                                                    }} />
+                                                </Column>
+                                            </Row>
                                         </td>
                                     )
                                 })}
@@ -100,9 +128,13 @@ function PriceListComponent() {
                 <table style={{ width: '100%' }}>
                     <caption>Embroidery Pricing:</caption>
                     <tr >
-                        <td></td>
+                        <td ></td>
                         {prices.embroideryStitchBuckets.map(item => {
-                            return <th align='left' scope="col">{item}</th>
+                            return (
+                                <th style={{ borderLeft: "1px solid rgb(0, 0, 0)" }} textAlign='center' scope="col">
+                                    {item}
+                                </th>
+                            )
                         })}
                     </tr>
                     {prices.embroideryPricingBuckets.map(item => {
@@ -111,8 +143,17 @@ function PriceListComponent() {
                                 <th style={{ textAlign: 'center' }} scope="row">{item.embroideryQuantityBucket}</th>
                                 {item.prices.map(itemTwo => {
                                     return (
-                                        <td>
-                                            {'$' + (Math.round(itemTwo.price * 100) / 100).toFixed(2)}
+                                        <td style={{ textAlign: 'center', justifyContent: 'center' }} >
+                                            <Row style={{ borderLeft: "1px solid rgb(0, 0, 0)" }}>
+                                                <Column flex={.5}>
+                                                    {'$' + (Math.round(itemTwo.price * 100) / 100).toFixed(2)}
+                                                </Column>
+                                                <Column horizontal='center' vertical='center' flex={.5}>
+                                                    <FaEdit size='15px' onClick={() => {
+                                                        displayToast('Edit In The Works for Embroidery Quantity Bucket ' + item.embroideryQuantityBucket + ' and ' + itemTwo.stitches + ' Stitches', 'warning')
+                                                    }} />
+                                                </Column>
+                                            </Row>
                                         </td>
                                     )
                                 })}
@@ -121,7 +162,7 @@ function PriceListComponent() {
                     })
                     }
                 </table >
-            </div>
+            </div >
         )
             : null
     );
