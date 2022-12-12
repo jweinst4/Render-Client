@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Column, Row } from 'simple-flexbox';
 import { createUseStyles } from 'react-jss';
-import CardComponent from 'components/cards/CardComponent';
 import { StoreContext } from "../../context/store/storeContext";
 import LoadingComponent from '../../components/loading';
 import * as apiServices from '../../resources/api';
@@ -10,12 +9,6 @@ import { useForm } from 'react-hook-form';
 import 'react-toastify/dist/ReactToastify.css';
 import { AwesomeButton } from 'react-awesome-button';
 import 'react-awesome-button/dist/styles.css';
-import { FaLock } from "react-icons/fa";
-import { GrUserAdmin } from "react-icons/gr";
-import Dropdown from 'react-dropdown';
-import 'react-dropdown/style.css';
-import { confirmAlert } from 'react-confirm-alert';
-import 'react-confirm-alert/src/react-confirm-alert.css'; // Import css
 
 const useStyles = createUseStyles({
 
@@ -73,6 +66,7 @@ function ShirtPricingComponent() {
     const [profit, setProfit] = useState();
     const [totalCost, setTotalCost] = useState();
     const [totalProfit, setTotalProfit] = useState();
+    const [retailPrice, setRetailPrice] = useState();
 
     const [shirtQuantityBucket, setShirtQuantityBucket] = useState();
 
@@ -166,9 +160,11 @@ function ShirtPricingComponent() {
                         const netCost = (printSideOneCost + printSideTwoCost + shirtCost)
                         setNetCost(netCost);
 
-                        const profit =
-                            (netCost * (markUp / 100))
+                        const profit = (netCost * (markUp / 100));
                         setProfit(profit);
+
+                        const retailPrice = netCost + profit;
+                        setRetailPrice(retailPrice);
 
                         setTotalCost((netCost * shirtQuantity));
                         setTotalProfit((profit * shirtQuantity));
@@ -227,7 +223,7 @@ function ShirtPricingComponent() {
                         Quantity:
                     </Column>
                     <Column flex={0.5}>
-                        {shirtQuantity ? shirtQuantity : 0}
+                        {shirtQuantity ? shirtQuantity.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : 0}
                     </Column>
                 </Row>
                 <Row style={{ margin: '10px' }}>
@@ -296,10 +292,18 @@ function ShirtPricingComponent() {
                 </Row>
                 <Row style={{ margin: '10px' }}>
                     <Column flex={0.5}>
+                        Retail Price:
+                    </Column>
+                    <Column flex={0.5}>
+                        ${retailPrice ? (Math.round(retailPrice * 100) / 100).toFixed(2) : 0}
+                    </Column>
+                </Row>
+                <Row style={{ margin: '10px' }}>
+                    <Column flex={0.5}>
                         Total Cost:
                     </Column>
                     <Column flex={0.5}>
-                        ${totalCost ? (Math.round(totalCost * 100) / 100).toFixed(2) : 0}
+                        ${totalCost ? (Math.round(totalCost * 100) / 100).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : 0}
                     </Column>
                 </Row>
                 <Row style={{ margin: '10px' }}>
@@ -307,7 +311,7 @@ function ShirtPricingComponent() {
                         Total Profit:
                     </Column>
                     <Column flex={0.5}>
-                        ${totalProfit ? (Math.round(totalProfit * 100) / 100).toFixed(2) : 0}
+                        ${totalProfit ? (Math.round(totalProfit * 100) / 100).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : 0}
                     </Column>
                 </Row>
             </Column>
