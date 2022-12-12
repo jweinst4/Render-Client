@@ -1,6 +1,52 @@
 import axios from 'axios';
 const url = process.env.REACT_APP_SERVER_URL
 
+export function postNewLightDarkPrices(accessToken, newShirtPrices) {
+    return new Promise((resolve, reject) => {
+        axios({
+            url: url + "api/user/submitNewLightDarkPricing",
+            method: "POST",
+            headers: {
+                "x-access-token": accessToken
+            },
+            data: {
+                newPrices: newShirtPrices
+            }
+        })
+            .then(res => {
+                resolve(res)
+            })
+            .catch(err => {
+                console.log('error');
+                console.log(err)
+                reject(err)
+            })
+    })
+}
+
+export function postNewEmbroideryPrices(accessToken, newEmbroideryPrices) {
+    return new Promise((resolve, reject) => {
+        axios({
+            url: url + "api/user/submitNewEmbroideryPricing",
+            method: "POST",
+            headers: {
+                "x-access-token": accessToken
+            },
+            data: {
+                newPrices: newEmbroideryPrices
+            }
+        })
+            .then(res => {
+                resolve(res)
+            })
+            .catch(err => {
+                console.log('error');
+                console.log(err)
+                reject(err)
+            })
+    })
+}
+
 export function getShirtPrices() {
     console.log('get shirt prices at api');
     console.log(url)

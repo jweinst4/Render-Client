@@ -6,6 +6,11 @@ import * as apiServices from '../../resources/api';
 import { FaEdit } from "react-icons/fa";
 import { Column, Row } from 'simple-flexbox';
 import { ToastContainer, toast } from 'react-toastify';
+import { useForm } from 'react-hook-form';
+import 'react-awesome-button/dist/styles.css';
+import PricingEditInputComponent from 'components/PricingEditInputComponent';
+import { AwesomeButton } from 'react-awesome-button';
+import 'react-awesome-button/dist/styles.css';
 
 const useStyles = createUseStyles({
 
@@ -51,21 +56,34 @@ const useStyles = createUseStyles({
 function PriceListComponent() {
     const classes = useStyles();
     const { actions, state } = useContext(StoreContext);
-
     const [prices, setPrices] = useState();
+    const [displayEditLightDarkPricing, setDisplayEditLightDarkPricing] = useState(false);
+    const [displayEditEmbroideryPricing, setDisplayEditEmbroideryPricing] = useState(false);
+    const [newLightDarkPricing, setNewLightDarkPricing] = useState([]);
+    const [newEmbroideryPricing, setNewEmbroideryPricing] = useState([]);
+
+    const fetchData = async () => {
+        actions.generalActions.setisbusy()
+        await apiServices.getPricingList()
+            .then(res => {
+                setPrices(res.data)
+                actions.generalActions.resetisbusy();
+            })
+            .catch(err => console.log(err.response))
+    }
 
     useEffect(() => {
-        const fetchData = async () => {
-            actions.generalActions.setisbusy()
-            await apiServices.getPricingList()
-                .then(res => {
-                    setPrices(res.data)
-                    actions.generalActions.resetisbusy();
-                })
-                .catch(err => console.log(err.response))
-        }
         fetchData().catch(console.error);
     }, []);
+
+    const {
+        register: register,
+        formState: { errors: errors },
+        handleSubmit: handleSubmit,
+        reset: reset
+    } = useForm({
+        mode: "onBlur",
+    });
 
     if (state.generalStates.isBusy) {
         return <LoadingComponent loading />
@@ -81,12 +99,39 @@ function PriceListComponent() {
         });
     }
 
+
+    const handleNewPricing = (props, newPrice) => {
+        if (props && props.type && props.type === 'lightAndDarkPricing') {
+            setNewLightDarkPricing([...newLightDarkPricing,
+            {
+                colors: props.colors,
+                quantity: props.quantity,
+                price: parseFloat(newPrice)
+            }
+            ]);
+        }
+        else if (props && props.type && props.type === 'embroideryPricing') {
+            setNewEmbroideryPricing([...newEmbroideryPricing,
+            {
+                stitches: props.stitches,
+                quantity: props.quantity,
+                price: parseFloat(newPrice)
+            }
+            ]);
+        }
+        else {
+            console.log('cant find one');
+        }
+    }
+
     return (
         prices ? (
             <div>
                 <ToastContainer />
                 <table style={{ width: '100%' }}>
-                    <caption>Light And Dark Shirt Pricing:</caption>
+                    <caption>Light And Dark Shirt Pricing <FaEdit size='16px' onClick={() => {
+                        setDisplayEditLightDarkPricing(!displayEditLightDarkPricing)
+                    }} /></caption>
                     <tr>
                         <td></td>
                         {prices.shirtColorQuantities.map(item => {
@@ -102,7 +147,6 @@ function PriceListComponent() {
                             <tr>
                                 <th style={{ textAlign: 'center' }} scope="row">{item.shirtQuantityBucket}</th>
                                 {item.prices.map(itemTwo => {
-                                    console.log(itemTwo)
                                     return (
                                         <td style={{ textAlign: 'center', justifyContent: 'center' }} >
                                             <Row style={{ borderLeft: "1px solid rgb(0, 0, 0)" }}>
@@ -110,9 +154,13 @@ function PriceListComponent() {
                                                     {'$' + (Math.round(itemTwo.price * 100) / 100).toFixed(2)}
                                                 </Column>
                                                 <Column horizontal='center' vertical='center' flex={.5}>
-                                                    <FaEdit size='15px' onClick={() => {
-                                                        displayToast('Awaiting Edit functionality for Shirt Quantity Bucket ' + item.shirtQuantityBucket + ' and ' + itemTwo.colors + ' Colors', 'warning')
-                                                    }} />
+                                                    {displayEditLightDarkPricing ?
+                                                        <PricingEditInputComponent
+                                                            colors={itemTwo.colors}
+                                                            quantity={itemTwo.quantity}
+                                                            type={'lightAndDarkPricing'}
+                                                            handleNewPricing={handleNewPricing} />
+                                                        : null}
                                                 </Column>
                                             </Row>
                                         </td>
@@ -123,10 +171,28 @@ function PriceListComponent() {
                     })
                     }
                 </table >
+                {displayEditLightDarkPricing ?
+                    <Row vertical='center' horizontal='center'>
+                        <AwesomeButton size="large" type="secondary"
+                            onPress={async () => {
+                                const response = await apiServices.postNewLightDarkPrices(state.generalStates.user.accessToken, newLightDarkPricing);
+                                if (response) {
+                                    setNewLightDarkPricing([]);
+                                    setDisplayEditLightDarkPricing(false);
+                                    fetchData().catch(console.error);
+                                }
+                            }}
+                        >
+                            Submit New Pricing
+                        </AwesomeButton>
+                    </Row>
+                    : null}
                 <br />
                 <br />
                 <table style={{ width: '100%' }}>
-                    <caption>Embroidery Pricing:</caption>
+                    <caption>Embroidery Pricing <FaEdit size='16px' onClick={() => {
+                        setDisplayEditEmbroideryPricing(!displayEditEmbroideryPricing)
+                    }} /></caption>
                     <tr >
                         <td ></td>
                         {prices.embroideryStitchBuckets.map(item => {
@@ -145,13 +211,19 @@ function PriceListComponent() {
                                     return (
                                         <td style={{ textAlign: 'center', justifyContent: 'center' }} >
                                             <Row style={{ borderLeft: "1px solid rgb(0, 0, 0)" }}>
-                                                <Column flex={.5}>
+                                                <Column flex={.5} onClick={() => { console.log('item 2, ', itemTwo) }}>
                                                     {'$' + (Math.round(itemTwo.price * 100) / 100).toFixed(2)}
                                                 </Column>
                                                 <Column horizontal='center' vertical='center' flex={.5}>
-                                                    <FaEdit size='15px' onClick={() => {
-                                                        displayToast('Awaiting Edit functionality for Embroidery Quantity Bucket ' + item.embroideryQuantityBucket + ' and ' + itemTwo.stitches + ' Stitches', 'warning')
-                                                    }} />
+                                                    <Column horizontal='center' vertical='center' flex={.5}>
+                                                        {displayEditEmbroideryPricing ?
+                                                            <PricingEditInputComponent
+                                                                stitches={itemTwo.stitches}
+                                                                quantity={itemTwo.quantity}
+                                                                type={'embroideryPricing'}
+                                                                handleNewPricing={handleNewPricing} />
+                                                            : null}
+                                                    </Column>
                                                 </Column>
                                             </Row>
                                         </td>
@@ -162,6 +234,21 @@ function PriceListComponent() {
                     })
                     }
                 </table >
+                {displayEditEmbroideryPricing ?
+                    <Row vertical='center' horizontal='center'>
+                        <AwesomeButton size="large" type="secondary"
+                            onPress={async () => {
+                                const response = await apiServices.postNewEmbroideryPrices(state.generalStates.user.accessToken, newEmbroideryPricing);
+                                if (response) {
+                                    setNewEmbroideryPricing([]);
+                                    setDisplayEditEmbroideryPricing(false);
+                                    fetchData().catch(console.error);
+                                }
+                            }}
+                        >
+                            Submit New Pricing
+                        </AwesomeButton>
+                    </Row> : null}
             </div >
         )
             : null
